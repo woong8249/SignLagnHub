@@ -20,4 +20,5 @@ export default async function connectDB() {
       console.log('DB connection successful!');
     })
     .catch(error => { console.log(error); });
+  return AppDataSource;
 }

@@ -26,14 +26,14 @@ export class GroupCode {
   regisDate: Date;
 
   // Not Column, just relation
-  @OneToMany(() => SignTypeCode, signTypeCode => signTypeCode.groupCode)
+  @OneToMany(() => SignTypeCode, signTypeCode => signTypeCode.groupCode, { cascade: true })
   typeCodes: SignTypeCode[];
 
   // Not Column, just relation
-  @OneToMany(() => SignPolysemy, signPolysemy => signPolysemy.id)
+  @OneToMany(() => SignPolysemy, signPolysemy => signPolysemy.id, { cascade: true })
   SignPolysemies: SignPolysemy[];
 
   // Not Column, just relation
-  @OneToMany(() => SignLanguageResource, signLanguageResource => signLanguageResource.id)
+  @OneToMany(() => SignLanguageResource, signLanguageResource => signLanguageResource.id, { cascade: true })
   SignLanguageResources: SignLanguageResource[];
 }

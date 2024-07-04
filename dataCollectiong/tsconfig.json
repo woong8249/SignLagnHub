@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "experimentalDecorators": true, //decorator 사용가능
+      "module": "ESNext",
+      "resolvePackageJsonExports": false, //package.json의 exports 필드를 무시
+      "types": [ //컴파일러가 로드할 타입 
+        "node",
+      ],
+      "strictPropertyInitialization": false
+    },
+    "extends": [
+      "@tsconfig/strictest/tsconfig",
+      "@tsconfig/node21/tsconfig",
+      "@tsconfig/esm/tsconfig"
+    ],
+    "include": [
+      "*.ts",
+      "src/**/*.ts",
+    ]
+  }

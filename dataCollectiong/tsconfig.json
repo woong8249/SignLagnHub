@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
       "experimentalDecorators": true, //decorator 사용가능
+      "emitDecoratorMetadata":true,
       "module": "ESNext",
       "resolvePackageJsonExports": false, //package.json의 exports 필드를 무시
       "types": [ //컴파일러가 로드할 타입 

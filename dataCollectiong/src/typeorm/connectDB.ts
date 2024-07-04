@@ -2,10 +2,15 @@ import { DataSource } from 'typeorm';
 
 import config from '../config/config';
 
+import loadEntities from './loadEntities';
+
+const entities = await loadEntities();
+
 const { typeormConfig } = config;
 const AppDataSource = new DataSource({
   ...typeormConfig,
-  synchronize: true,
+  entities,
+  synchronize: false,
   logging: true,
 });
 

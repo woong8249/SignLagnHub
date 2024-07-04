@@ -1,3 +1,3 @@
-import connectDB from './src/typeorm/connect-db';
+import connectDB from './src/typeorm/connectDB';
 
-await connectDB()
+await connectDB();

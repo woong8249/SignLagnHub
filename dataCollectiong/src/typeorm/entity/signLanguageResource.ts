@@ -17,12 +17,12 @@ export class SignLanguageResource {
 
     // FK
     @JoinColumn({ name: 'grp_cd' })
-    @ManyToOne(() => GroupCode, group => group.groupCode)
+    @ManyToOne(() => GroupCode, group => group.signLanguageResources)
     groupCode: GroupCode;
 
     // FK
     @JoinColumn({ name: 'type_cd' })
-    @ManyToOne(() => SignTypeCode, type => type.typeCode)
+    @ManyToOne(() => SignTypeCode, type => type.signLanguageResources)
     typeCode:SignTypeCode;
 
     @Column('varchar', { name: 'object_url', length: 300 })

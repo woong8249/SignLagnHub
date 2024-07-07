@@ -17,12 +17,12 @@ export class SignPolysemy {
 
   // FK
   @JoinColumn({ name: 'grp_cd' })
-  @ManyToOne(() => GroupCode, group => group.groupCode)
+  @ManyToOne(() => GroupCode, group => group.signPolysemies)
   groupCode: GroupCode;
 
   // FK
   @JoinColumn({ name: 'type_cd' })
-  @ManyToOne(() => SignTypeCode, type => type.typeCode)
+  @ManyToOne(() => SignTypeCode, type => type.signPolysemies)
   typeCode:SignTypeCode;
 
   @Column('varchar', { name: 'rmrk', length: 100 })

@@ -31,9 +31,9 @@ export class GroupCode {
 
   // Not Column, just relation
   @OneToMany(() => SignPolysemy, signPolysemy => signPolysemy.id, { cascade: true })
-  SignPolysemies: SignPolysemy[];
+  signPolysemies: SignPolysemy[];
 
   // Not Column, just relation
   @OneToMany(() => SignLanguageResource, signLanguageResource => signLanguageResource.id, { cascade: true })
-  SignLanguageResources: SignLanguageResource[];
+  signLanguageResources: SignLanguageResource[];
 }

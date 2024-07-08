@@ -33,10 +33,10 @@ export class SignTypeCode {
   updateDate: Date;
 
   // Not Column, just relation
-  @OneToMany(() => SignPolysemy, signPolysemy => signPolysemy.id, { cascade: true })
+  @OneToMany(() => SignPolysemy, signPolysemy => signPolysemy.typeCode, { cascade: true })
   signPolysemies: SignPolysemy[];
 
   // Not Column, just relation
-  @OneToMany(() => SignLanguageResource, signLanguageResource => signLanguageResource.id, { cascade: true })
+  @OneToMany(() => SignLanguageResource, signLanguageResource => signLanguageResource.typeCode, { cascade: true })
   signLanguageResources: SignLanguageResource[];
 }

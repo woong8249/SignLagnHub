@@ -10,8 +10,8 @@ const { typeormConfig } = config;
 const AppDataSource = new DataSource({
   ...typeormConfig,
   entities,
-  synchronize: false,
-  logging: true,
+  synchronize: true,
+  logging: false,
 });
 
 export default async function connectDB() {

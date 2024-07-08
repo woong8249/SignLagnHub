@@ -18,15 +18,15 @@ function required(key: string, defaultValue: undefined | string | number): strin
 const config = {
   typeormConfig: {
     type: 'mysql' as const,
-    host: required('DB_HOST', undefined) as string,
-    port: required('DB_PORT', undefined) as number,
-    username: required('DB_USERNAME', undefined) as string,
-    password: required('DB_PASSWORD', undefined) as string,
-    database: required('DB_DATABASE', undefined) as string,
+    host: required('VITE_DB_HOST', undefined) as string,
+    port: required('VITE_DB_PORT', undefined) as number,
+    username: required('VITE_DB_USERNAME', undefined) as string,
+    password: required('VITE_DB_PASSWORD', undefined) as string,
+    database: required('VITE_DB_DATABASE', undefined) as string,
   },
-  sign:{
-    daily :required('SIGN_LAN_DAILY_SERVICE_KEY',undefined)
-  }
+  sign: {
+    daily: required('VITE_SIGN_LAN_DAILY_SERVICE_KEY', undefined),
+  },
 };
 
 console.log('config :', config);

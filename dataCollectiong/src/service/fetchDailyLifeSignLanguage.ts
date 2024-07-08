@@ -1,20 +1,17 @@
 /* eslint-disable no-await-in-loop */
-import { GroupCode } from '../typeorm/entity/groupCode';
-import { SignLanguageResource } from '../typeorm/entity/signLanguageResource';
-import { SignPolysemy } from '../typeorm/entity/signPolysemy';
-import { SignTypeCode } from '../typeorm/entity/signTypeCode';
 import config from '../config/config';
-import connectDB from '../typeorm/connectDB';
 
-const appDataSource = await connectDB();
-
-type NecessaryItem = {
+export type NecessaryItem = {
   title :string,
   regDate:string,
   subDescription:string,
 }
 
 type Response ={
+  header: {
+    resultCode: '0000'|'F2013' |'9999'
+  },
+
   body:{
     items:{
       item:NecessaryItem[]
@@ -29,58 +26,44 @@ export async function fetchDailyLifeSignLanguage(numOfRows = 100, pageNo = 1) :P
       Accept: 'application/json',
     },
   };
-
+  const fetchInfo = { pageNo, numOfRows };
+  console.log('fetch start :', fetchInfo);
   const response = await fetch(baseURL, option);
   if (response.ok) {
-    const jsonData = await response.json() as Record<'response', Response>;
-    return jsonData;
+    const data = await response.json() as Record<'response', Response>;
+    console.log('fetch result :', { ...fetchInfo, resultCode: data.response.header.resultCode });
+    return data;
   }
   return null;
 }
+/**
+ *
+ *
+ * @param {number} totalCount 원하는 record총 개수
+ * @param {number} worker 병렬 처리개수
+ * @param {number} numOfRows 한 요청당 가져오는 레코드개수
+ */
+export async function parallelFetch(totalCount:number, worker = 1, numOfRows = 100) {
+  const workers = Array.from({ length: worker });
+  const callCount = Math.ceil(totalCount / (numOfRows * worker));
+  const limitRecordQuantity = 3616;
+  const results = [];
 
-const groupCodeRepository = appDataSource.getRepository(GroupCode);
-const groupCode = await groupCodeRepository.findOneBy({ groupCode: '02' }) as GroupCode;
+  for (let i = 1; i <= callCount; i += 1) {
+    const process = [];
+    process.push(...workers.map((_worker, index) => {
+      const pageNo = (index + 1) + ((i - 1) * worker);
+      const previousRequestedRecordQuantity = (pageNo - 1) * numOfRows;
+      const currentRequestedRecordQuantity = pageNo * numOfRows;
 
-for (let i = 2; i < 38; i += 1) {
-  const { item: items } = (await fetchDailyLifeSignLanguage(100, i))?.response.body.items as {item :NecessaryItem[]};
-  console.log('fetch done');
-
-  for (let j = 0; j < items.length; j += 1) {
-    const { regDate, subDescription } = items[j] as NecessaryItem;
-    let { title } = items[j] as NecessaryItem;
-    const isMultipleTile = title.includes(',');
-    const polySemis = isMultipleTile && title.split(',').slice(1);
-    title = isMultipleTile ? title.split(',')[0] as string : title;
-
-    const typeCode = new SignTypeCode();
-    typeCode.groupCode = groupCode;
-    typeCode.typeCode = title;
-    typeCode.regisDate = new Date(regDate);
-    typeCode.updateDate = new Date(regDate);
-    typeCode.remark = title;
-
-    if (isMultipleTile && polySemis) {
-      typeCode.SignPolysemies = polySemis.map(item => {
-        const signPolysemy = new SignPolysemy();
-        signPolysemy.groupCode = groupCode;
-        signPolysemy.typeCode = typeCode;
-        signPolysemy.remark = item;
-        signPolysemy.updateDate = new Date(regDate);
-        signPolysemy.regisDate = new Date(regDate);
-        return signPolysemy;
-      });
-    }
-
-    const signLanguageResource = new SignLanguageResource();
-    signLanguageResource.groupCode = groupCode;
-    signLanguageResource.typeCode = typeCode;
-    signLanguageResource.remark = title;
-    signLanguageResource.url = subDescription;
-    signLanguageResource.regisDate = new Date(regDate);
-    signLanguageResource.updateDate = new Date(regDate);
-    typeCode.SignLanguageResources = [signLanguageResource];
-    const signTypeCodeRepo = appDataSource.getRepository(SignTypeCode);
-    await signTypeCodeRepo.save(typeCode).catch(console.error);
-    console.log('save.done');
+      if (currentRequestedRecordQuantity <= limitRecordQuantity || previousRequestedRecordQuantity < limitRecordQuantity) {
+        return fetchDailyLifeSignLanguage(numOfRows, pageNo);
+      }
+      return null;
+    }));
+    const result = await Promise.all(process);
+    results.push(...result);
   }
+
+  return results;
 }

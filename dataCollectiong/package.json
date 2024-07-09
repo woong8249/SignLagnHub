@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "run(){ NODE_OPTIONS=--experimental-import-meta-resolve vite-node ${1:-index.ts}; }; tsc --noEmit && run",
-    "dev": "run(){ NODE_OPTIONS=--experimental-import-meta-resolve vite-node --watch ${1:-index.ts}; }; tsc --noEmit && run"
+    "dev": "run(){ NODE_OPTIONS=--experimental-import-meta-resolve vite-node --watch ${1:-index.ts}; }; tsc --noEmit && run",
+    "test": "NODE_OPTIONS=--experimental-import-meta-resolve vitest"
   },
   "author": "jiwoong",
   "license": "ISC",
@@ -18,7 +19,8 @@
     "typeorm": "^0.3.20",
     "typescript": "^5.5.3",
     "vite": "^5.3.3",
-    "vite-node": "^1.6.0"
+    "vite-node": "^1.6.0",
+    "vitest": "^1.6.0"
   },
   "devDependencies": {
     "@tsconfig/esm": "^1.0.5",

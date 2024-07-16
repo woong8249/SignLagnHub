@@ -6,34 +6,26 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 
-import { SignLanguageResource } from './signLanguageResource';
-import { SignPolysemy } from './signPolysemy';
-import { SignTypeCode } from './signTypeCode';
+import { Definition } from './definition';
+import { Sign } from './sign';
 
 @Entity({ name: 'tn_grp_cd' })
 export class GroupCode {
-  // PK
-  @PrimaryColumn('varchar', { name: 'grp_cd', length: 2 })
-  groupCode: string;
+  @PrimaryColumn({ name: 'grp_cd', type: 'varchar', length: 2 })
+  code: string;
 
-  @Column('varchar', { name: 'grp_nm', length: 50 })
-  groupName: string;
+  @Column({ name: 'grp_nm', type: 'varchar', length: 50 })
+  name: string;
 
-  @Column('varchar', { name: 'rmrk', length: 100 })
+  @Column({ name: 'rmrk', type: 'varchar', length: 100 })
   remark: string;
 
-  @Column('timestamp', { name: 'reg_dt' })
+  @Column({ name: 'reg_dt', type: 'timestamp' })
   regisDate: Date;
 
-  // Not Column, just relation
-  @OneToMany(() => SignTypeCode, signTypeCode => signTypeCode.groupCode, { cascade: true })
-  typeCodes: SignTypeCode[];
+  @OneToMany(() => Sign, sign => sign.groupCode, { cascade: true })
+  signs: Sign[];
 
-  // Not Column, just relation
-  @OneToMany(() => SignPolysemy, signPolysemy => signPolysemy.id, { cascade: true })
-  signPolysemies: SignPolysemy[];
-
-  // Not Column, just relation
-  @OneToMany(() => SignLanguageResource, signLanguageResource => signLanguageResource.id, { cascade: true })
-  signLanguageResources: SignLanguageResource[];
+  @OneToMany(() => Definition, def => def.groupCode, { cascade: true })
+  signDefinitions: Definition[];
 }

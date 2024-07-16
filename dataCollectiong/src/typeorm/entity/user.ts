@@ -1,26 +1,40 @@
+// entity/user
 import {
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { Definition } from './definition';
+import { Sign } from './sign';
 
 @Entity({ name: 'tn_user' })
 export class User {
     @PrimaryGeneratedColumn({ name: 'user_id' })
     id: number;
 
-    @Column('varchar', { name: 'user_mail', length: 50 })
+    @Column({ name: 'user_mail', type: 'varchar', length: 50 })
     email: string;
 
-    @Column('varchar', { name: 'user_pwd', length: 200 })
+    @Column({ name: 'user_pwd', type: 'varchar', length: 255 })
     password: string;
 
-    @Column('varchar', { name: 'user_nm', length: 50 })
+    @Column({ name: 'user_role', type: 'enum', enum: ['user', 'admin'] })
+    role: 'user' | 'admin';
+
+    @Column({ name: 'user_nm', type: 'varchar', length: 50 })
     name: string;
 
-    @Column('varchar', { name: 'user_loc', length: 50 })
+    @Column({ name: 'user_loc', type: 'varchar', length: 50 })
     location: string;
 
-    @Column('timestamp', { name: 'reg_dt' })
+    @Column({ name: 'reg_dt', type: 'timestamp' })
     regisDate: Date;
+
+    @OneToMany(() => Sign, sign => sign.register, { cascade: true })
+    signs: Sign[];
+
+    @OneToMany(() => Definition, sign => sign.register, { cascade: true })
+    signDefinitions: Definition[];
 }

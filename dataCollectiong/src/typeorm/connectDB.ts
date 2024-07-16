@@ -11,7 +11,7 @@ const AppDataSource = new DataSource({
   ...typeormConfig,
   entities,
   synchronize: true,
-  logging: false,
+  logging: true,
 });
 
 export default async function connectDB() {

@@ -9,6 +9,11 @@ const dataForTest = dailyLifeSignLanguageResults
   .flat()
   .map(({ title, regDate, subDescription }) => ({ title, regDate, subDescription }));
 
+// const dataHadComma = dailyLifeSignLanguageResults
+//   .map(item => item.response.body.items.item).flat()
+//   .filter(item => item.title.includes(','))
+//   .map(({ title, regDate, subDescription }) => ({ title, regDate, subDescription }));
+
 const numberOfData = 3616;
 // 한글,마침표,따옴표,괄호,띄어쓰기 까지만 허용
 const regexToFindSpecialCharacters = /[^가-힣ㄱ-ㅎㅏ-ㅣ.,() ]/;

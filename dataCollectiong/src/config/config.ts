@@ -27,6 +27,7 @@ const config = {
   sign: {
     daily: required('VITE_SIGN_LAN_DAILY_SERVICE_KEY', undefined),
   },
+  apiKey: required('VITE_GPT_API_KEY', undefined) as string,
 };
 
 console.log('config :', config);

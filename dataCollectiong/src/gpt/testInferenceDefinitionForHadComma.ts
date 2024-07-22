@@ -1,6 +1,6 @@
 import type OpenAI from 'openai';
 
-import { firstAnswer, firstQuestion } from './makeBatchFormatFile';
+import { firstAnswer, firstQuestion } from './batch/dailyLifeSign-haveComma';
 import openai from './client';
 
 type inputType = {

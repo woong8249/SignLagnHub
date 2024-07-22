@@ -1,11 +1,7 @@
 // entity/sign.ts
 import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
+  Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn,
+
 } from 'typeorm';
 
 import { Definition } from './definition';
@@ -14,11 +10,12 @@ import { User } from './user';
 
 @Entity({ name: 'tn_sign' })
 export class Sign {
-  @ManyToOne(() => GroupCode, group => group.signs)
+  @PrimaryColumn({ name: 'grp_cd', type: 'varchar', length: 2 })
   @JoinColumn({ name: 'grp_cd', referencedColumnName: 'code' })
+  @ManyToOne(() => GroupCode, group => group.signs)
   groupCode: GroupCode;
 
-  @PrimaryGeneratedColumn({ name: 'sign_id' })
+  @PrimaryColumn({ name: 'sign_id', type: 'int' })
   id: number;
 
   @Column({ name: 'video_url', type: 'varchar', length: 255 })
@@ -26,7 +23,7 @@ export class Sign {
 
   @ManyToOne(() => User, user => user.signs)
   @JoinColumn({ name: 'reg_by', referencedColumnName: 'id' })
-  register: string;
+  register: User;
 
   @Column({ name: 'reg_dt', type: 'timestamp' })
   regisDate: Date;

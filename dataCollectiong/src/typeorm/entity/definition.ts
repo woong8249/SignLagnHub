@@ -1,6 +1,7 @@
 // entity/definition
 import {
-  Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,
+  Column, Entity, JoinColumn, ManyToOne, PrimaryColumn,
+  // PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { GroupCode } from './groupCode';
@@ -9,18 +10,23 @@ import { User } from './user';
 
 @Entity('tn_def')
 export class Definition {
-    @ManyToOne(() => GroupCode, group => group.signDefinitions)
+    @PrimaryColumn({ name: 'grp_cd', type: 'varchar' })
     @JoinColumn({ name: 'grp_cd', referencedColumnName: 'code' })
+    @ManyToOne(() => GroupCode, group => group.signs)
     groupCode: GroupCode;
 
+    @PrimaryColumn({ name: 'sign_id', type: 'int' })
+    @JoinColumn([
+      { name: 'grp_cd', referencedColumnName: 'groupCode' },
+      { name: 'sign_id', referencedColumnName: 'id' },
+    ])
     @ManyToOne(() => Sign, sign => sign.definitions)
-    @JoinColumn({ name: 'sign_id', referencedColumnName: 'id' })
-    signId: Sign;
+    signId: number;
 
-    @PrimaryGeneratedColumn({ name: 'def_id' })
+    @PrimaryColumn({ name: 'def_id', type: 'int' })
     id: number;
 
-    @Column({ name: 'def', type: 'varchar', length: 255 })
+    @Column({ name: 'def', type: 'json' })
     definition: string;
 
     @Column({ name: 'ref_word', type: 'varchar', length: 50 })
@@ -28,7 +34,7 @@ export class Definition {
 
     @ManyToOne(() => User, user => user.signDefinitions)
     @JoinColumn({ name: 'reg_by', referencedColumnName: 'id' })
-    register: string;
+    register: User;
 
     @Column({ name: 'reg_dt', type: 'timestamp' })
     regisDate: Date;

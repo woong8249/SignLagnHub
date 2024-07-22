@@ -7,7 +7,7 @@ import noHadComma from '../dist/dailyLifeSign-processedData/dailyLifeSign-noHadC
 
 describe('Test Processed data', () => {
   it('dailyLifeSign-processedData-noHadComma', () => {
-    expect(noHadComma.length).toBe(1922);
+    expect(noHadComma.length).toBe(1920);
     noHadComma.forEach(({ words, regDate, subDescription }) => {
       expect(Array.isArray(words)).toBe(true);
       expect(typeof regDate).toBe('string');

@@ -11,16 +11,3 @@ export async function uploadBatchFile(fileNameFromDist :string) {
   });
   return file;
 }
-const result = await uploadBatchFile('batchFormat/dailyLifeSign-noHadComma-polysemy-batchFormat-jsonl.jsonl');
-console.dir(result, { depth: 10 });
-
-// {
-//   object: 'file',
-//   id: 'file-LmzMPuOXtbrvlnMtkDqdOXEF',
-//   purpose: 'batch',
-//   filename: 'dailyLifeSign-noHadComma-polysemy-batchFormat-jsonl.jsonl',
-//   bytes: 2476411,
-//   created_at: 1721501670,
-//   status: 'processed',
-//   status_details: null
-// }

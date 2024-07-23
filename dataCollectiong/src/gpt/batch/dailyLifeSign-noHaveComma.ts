@@ -3,8 +3,8 @@ import path from 'path';
 
 import OpenAI from 'openai';
 
-import dailyLifeSignAPIResults from '../../../dist/dailyLifeSign-APIResults.json';
-import dailyLifeSignNoHadCommaBatchFormat from '../../../dist/batchFormat/dailyLifeSign-noHadComma-batchFormat-json.json';
+import dailyLifeSignAPIResults from '../../../dist/dailyLifeSign/apiResults.json';
+import dailyLifeSignNoHadCommaBatchFormat from '../../../dist/dailyLifeSign/batchFormat/noHadComma-json.json';
 
 export const firstQuestionForNoHadComma = JSON.stringify([
   {
@@ -70,7 +70,7 @@ const batchJSONFormatsWhichNoHaveComma = dailyLifeSignAPIResults
     return batchFormat;
   });
 
-fs.writeFileSync(path.join(__dirname, '../../../dist/batchFormat/dailyLifeSign-noHadComma-batchFormat-json.json'), JSON.stringify(batchJSONFormatsWhichNoHaveComma));
+fs.writeFileSync(path.join(__dirname, '../../../dist/dailyLifeSign/batchFormat/noHadComma-json.json'), JSON.stringify(batchJSONFormatsWhichNoHaveComma));
 
 const dailyLifeSignNoHadCommaBatchFormatJsonlString = dailyLifeSignNoHadCommaBatchFormat.map(obj => JSON.stringify(obj)).join('\n');
-fs.writeFileSync(path.join(__dirname, '../../dist/batchFormat/dailyLifeSign-noHadComma-batchFormat-jsonl.jsonl'), dailyLifeSignNoHadCommaBatchFormatJsonlString);
+fs.writeFileSync(path.join(__dirname, '../../dist/dailyLifeSign/batchFormat/noHadComma-jsonl.jsonl'), dailyLifeSignNoHadCommaBatchFormatJsonlString);

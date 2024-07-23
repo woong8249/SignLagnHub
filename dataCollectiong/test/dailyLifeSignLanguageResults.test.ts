@@ -2,7 +2,7 @@ import {
   describe, expect, it,
 } from 'vitest';
 
-import dailyLifeSignLanguageResults from '../dist/dailyLifeSign-APIResults.json';
+import dailyLifeSignLanguageResults from '../dist/dailyLifeSign/apiResults.json';
 
 const dataForTest = dailyLifeSignLanguageResults
   .map(_item => _item.response.body.items.item)

@@ -3,7 +3,7 @@ import path from 'path';
 
 import OpenAI from 'openai';
 
-import dailyLifeSignAPIResults from '../../../dist/dailyLifeSign-APIResults.json';
+import dailyLifeSignAPIResults from '../../../dist/dailyLifeSign/apiResults.json';
 
 export const firstQuestion = JSON.stringify([
   {
@@ -79,7 +79,7 @@ const batchJSONFormatsWhichHaveComma = dailyLifeSignAPIResults
     return batchFormat;
   });
 
-fs.writeFileSync(path.join(__dirname, '../../../dist/batchFormat/dailyLifeSign-hadComma-batchFormat-json.json'), JSON.stringify(batchJSONFormatsWhichHaveComma));
+fs.writeFileSync(path.join(__dirname, '../../../dist/dailyLifeSign/batchFormat/hadComma-json.json'), JSON.stringify(batchJSONFormatsWhichHaveComma));
 
 const jsonlString = batchJSONFormatsWhichHaveComma.map(obj => JSON.stringify(obj)).join('\n');
-fs.writeFileSync(path.join(__dirname, '../../../dist/batchFormat/dailyLifeSign-hadComma-batchFormat-jsonl.jsonl'), jsonlString);
+fs.writeFileSync(path.join(__dirname, '../../../dist/dailyLifeSign/batchFormat/hadComma-jsonl.jsonl'), jsonlString);

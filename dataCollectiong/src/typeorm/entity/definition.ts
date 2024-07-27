@@ -21,7 +21,7 @@ export class Definition {
       { name: 'sign_id', referencedColumnName: 'id' },
     ])
     @ManyToOne(() => Sign, sign => sign.definitions)
-    signId: number;
+    sign: Sign;
 
     @PrimaryColumn({ name: 'def_id', type: 'int' })
     id: number;

@@ -1,3 +1,13 @@
-import { dataSource } from './src/typeorm/dataSource';
+import config from './src/config/config';
+import createDataSource from './src/typeorm/dataSource';
+import loadEntities from './src/typeorm/loadEntities';
 
-console.log(dataSource.isInitialized);
+const { typeormConfig } = config;
+const entities = await loadEntities();
+const options = {
+  ...typeormConfig,
+  entities,
+  synchronize: false,
+  logging: true,
+};
+await createDataSource(options);

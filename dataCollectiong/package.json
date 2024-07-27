@@ -5,17 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "run(){ NODE_OPTIONS=--experimental-import-meta-resolve vite-node ${1:-index.ts}; }; tsc --noEmit && run",
+    "start": "run(){ NODE_OPTIONS=--experimental-import-meta-resolve vite-node --watch ${1:-index.ts}; }; tsc --noEmit && run",
     "dev": "run(){ NODE_OPTIONS=--experimental-import-meta-resolve vite-node --watch ${1:-index.ts}; }; tsc --noEmit && run",
     "test": "NODE_OPTIONS=--experimental-import-meta-resolve vitest",
-    "db:create": "typeorm-extension-esm db:create  -d ./dataSource.ts",
-    "db:drop": "typeorm-extension-esm db:drop  -d ./dataSource.ts",
-    "seed:run": "vite-node ./src/typeorm/seed/groupCodeSeeder.ts"
+    "db:create": "vite-node ./node_modules/typeorm-extension/bin/cli.cjs db:create -d ./dataSource.ts",
+    "db:drop": "vite-node ./node_modules/typeorm-extension/bin/cli.mjs db:drop -d ./dataSource.ts",
+    "seed:run": "vite-node seedInitialRecode.ts"
   },
   "author": "jiwoong",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^20.14.12",
     "mysql2": "^3.10.2",
     "openai": "^4.52.7",
     "reflect-metadata": "^0.2.2",
@@ -27,6 +26,7 @@
     "vitest": "^1.6.0"
   },
   "devDependencies": {
+    "@types/node": "^20.14.12",
     "@tsconfig/node21": "^21.0.3",
     "@tsconfig/strictest": "^2.0.5"
   }

@@ -31,6 +31,6 @@ export class Sign {
   @Column({ name: 'upd_dt', type: 'timestamp' })
   updateDate: Date;
 
-  @OneToMany(() => Definition, def => def.signId, { cascade: true })
+  @OneToMany(() => Definition, def => def.sign, { cascade: true })
   definitions: Definition[];
 }

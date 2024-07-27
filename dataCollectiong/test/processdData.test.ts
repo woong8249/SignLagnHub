@@ -2,8 +2,8 @@ import {
   describe, expect, it,
 } from 'vitest';
 
-import hadComma from '../dist/dailyLifeSign/processedData/hadComma.json';
-import noHadComma from '../dist/dailyLifeSign/processedData/noHadComma.json';
+import hadComma from '../data/dailyLifeSign/processedData/hadComma.json';
+import noHadComma from '../data/dailyLifeSign/processedData/noHadComma.json';
 
 describe('Test Processed data', () => {
   it('dailyLifeSign-processedData-noHadComma', () => {

@@ -1,23 +1,30 @@
 {
-    "compilerOptions": {
-      "experimentalDecorators": true, //decorator 사용가능
-      "emitDecoratorMetadata":true,
-      "module": "ESNext",
-      "resolvePackageJsonExports": false, //package.json의 exports 필드를 무시
-      "types": [ //컴파일러가 로드할 타입 
-        "node",
+  "compilerOptions": {
+    "module": "esnext", // => module system
+    "moduleResolution": "node", // => 확장자 제거 가능하게해줌
+    "target": "ESNext", // =>  js version
+    "lib": ["es6"], //TypeScript가 코드 작성 시 사용할 수 있는 타입 정의 파일을 지정
+    "types": [ 
+        "node", //??
       ],
-      "strictPropertyInitialization": false
-    },
-    "extends": [
-      "@tsconfig/strictest/tsconfig",
-      "@tsconfig/node21/tsconfig",
-      "@tsconfig/esm/tsconfig"
-    ],
-    "include": [
-      "*.ts",
-      "src/**/*.ts",
-      "test/**/*.ts",
-    ],
-
-  }
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "strictPropertyInitialization": false, //  class member  no initializer
+    "resolveJsonModule": true
+  },
+  "include": [
+    "**/*.ts" ,
+    "src/**/*.ts",
+    "test/**/*.ts",
+  ],
+  "extends":[
+    "@tsconfig/node21",
+    "@tsconfig/strictest",
+  ],
+  "exclude": [
+    "node_modules", 
+  ]
+}

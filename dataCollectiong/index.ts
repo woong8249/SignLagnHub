@@ -1,3 +1,3 @@
-import connectDB from './src/typeorm/connectDB';
+import { dataSource } from './src/typeorm/dataSource';
 
-await connectDB();
+console.log(dataSource.isInitialized);

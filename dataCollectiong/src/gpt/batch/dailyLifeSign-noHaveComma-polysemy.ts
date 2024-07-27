@@ -3,7 +3,7 @@ import path from 'path';
 
 import OpenAI from 'openai';
 
-import data from '../../../dist/dailyLifeSign/batchInferenceResult/noHadComma.json';
+import data from '../../../data/dailyLifeSign/batchInferenceResult/noHadComma.json';
 
 export const firstQuestion = JSON.stringify([{
   words: [
@@ -146,7 +146,7 @@ const target = format.map((item, idx) => {
   return batchFormat;
 });
 
-fs.writeFileSync(path.join(__dirname, '../../../dist/dailyLifeSign/batchFormat/noHadComma-polysemy-json.json'), JSON.stringify(target));
+fs.writeFileSync(path.join(__dirname, '../../../data/dailyLifeSign/batchFormat/noHadComma-polysemy-json.json'), JSON.stringify(target));
 
 const jsonlString = target.map(obj => JSON.stringify(obj)).join('\n');
-fs.writeFileSync(path.join(__dirname, '../../../dist/dailyLifeSign/batchFormat/noHadComma-polysemy-jsonl.jsonl'), jsonlString);
+fs.writeFileSync(path.join(__dirname, '../../../data/dailyLifeSign/batchFormat/noHadComma-polysemy-jsonl.jsonl'), jsonlString);

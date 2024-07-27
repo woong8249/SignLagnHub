@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 function required(key: string, defaultValue: undefined | string | number): string | number {
   const value: undefined | string | number = process.env[key] || defaultValue;
   if (value === undefined) {

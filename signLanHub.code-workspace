@@ -1,11 +1,16 @@
 {
-    "folders": [{
+    "folders": [
+        {
             "name": "signLanHub",
             "path": "."
         },
         {
             "name": "dataCollecting",
-            "path": "dataCollecting"
+            "path": "./dataCollecting"
+        },
+        {
+            "name": "api-server",
+            "path": "./api-server"
         },
     ],
 }

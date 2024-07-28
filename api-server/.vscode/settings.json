@@ -1,0 +1,7 @@
+{
+    "eslint.format.enable": true,
+    "eslint.experimental.useFlatConfig": false,
+    "eslint.options": {
+        "overrideConfigFile": ".eslintrc.js"
+    }
+}

@@ -5,21 +5,20 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Definition } from '../definitions/definition.entity';
-import { GroupCode } from '../group-codes/group-code.entity';
+import { Group } from '../groups/group.entity';
 import { User } from '../users/user.entity';
 
 @Entity({ name: 'tn_sign' })
 export class Sign {
-  @PrimaryColumn({ name: 'grp_cd', type: 'varchar', length: 2 })
-  @JoinColumn({ name: 'grp_cd', referencedColumnName: 'code' })
-  @ManyToOne(() => GroupCode, (group) => group.signs)
-  groupCode: GroupCode;
+  @JoinColumn({ name: 'grp_id', referencedColumnName: 'id' })
+  @ManyToOne(() => Group, (group) => group.signs)
+  group: Group;
 
-  @PrimaryColumn({ name: 'sign_id', type: 'int' })
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ name: 'video_url', type: 'varchar', length: 255 })

@@ -6,25 +6,45 @@ import { Sign } from '../signs/sign.entity';
 
 @Entity({ name: 'tn_user' })
 export class User {
-  @PrimaryGeneratedColumn({ name: 'user_id' })
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'user_mail', type: 'varchar', length: 50 })
+  @Column({
+    name: 'email',
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
   email: string;
 
-  @Column({ name: 'user_pwd', type: 'varchar', length: 255 })
+  @Column({
+    name: 'pwd',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
   password: string;
 
-  @Column({ name: 'user_role', type: 'enum', enum: ['user', 'admin'] })
+  @Column({
+    name: 'role',
+    type: 'enum',
+    enum: ['user', 'admin'],
+    nullable: true,
+  })
   role: 'user' | 'admin';
 
-  @Column({ name: 'user_nm', type: 'varchar', length: 50 })
+  @Column({
+    name: 'nm',
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
   name: string;
 
-  @Column({ name: 'user_loc', type: 'varchar', length: 50 })
+  @Column({ name: 'loc', type: 'varchar', length: 50 })
   location: string;
 
-  @Column({ name: 'reg_dt', type: 'timestamp' })
+  @Column({ name: 'reg_dt', type: 'timestamp', nullable: true })
   regisDate: Date;
 
   @OneToMany(() => Sign, (sign) => sign.register, { cascade: true })

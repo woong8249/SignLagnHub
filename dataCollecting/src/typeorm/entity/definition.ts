@@ -1,29 +1,25 @@
 // entity/definition
 import {
-  Column, Entity, JoinColumn, ManyToOne, PrimaryColumn,
-  // PrimaryGeneratedColumn,
+  Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { GroupCode } from './groupCode';
+import { Group } from './group';
 import { Sign } from './sign';
 import { User } from './user';
 
 @Entity('tn_def')
 export class Definition {
-    @PrimaryColumn({ name: 'grp_cd', type: 'varchar' })
-    @JoinColumn({ name: 'grp_cd', referencedColumnName: 'code' })
-    @ManyToOne(() => GroupCode, group => group.signs)
-    groupCode: GroupCode;
+    @JoinColumn({ name: 'grp_cd', referencedColumnName: 'id' })
+    @ManyToOne(() => Group, group => group.signs)
+    group: Group;
 
-    @PrimaryColumn({ name: 'sign_id', type: 'int' })
     @JoinColumn([
-      { name: 'grp_cd', referencedColumnName: 'groupCode' },
       { name: 'sign_id', referencedColumnName: 'id' },
     ])
     @ManyToOne(() => Sign, sign => sign.definitions)
     sign: Sign;
 
-    @PrimaryColumn({ name: 'def_id', type: 'int' })
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column({ name: 'def', type: 'json' })

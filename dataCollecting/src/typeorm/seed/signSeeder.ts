@@ -4,7 +4,7 @@ import { type Seeder, runSeeders } from 'typeorm-extension';
 import { type DataSource } from 'typeorm';
 
 import { Definition } from '../entity/definition';
-import { GroupCode } from '../entity/groupCode';
+import { Group } from '../entity/group';
 import { Sign } from '../entity/sign';
 import { User } from '../entity/user';
 import processedData from '../../../data/dailyLifeSign/processedData/noHadComma.json';
@@ -22,26 +22,22 @@ function chunkArray<T>(array: T[], chunkSize: number): T[][] {
 export class SignSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const signRepo = dataSource.getRepository(Sign);
-    const groupCodeRepo = dataSource.getRepository(GroupCode);
-    const dailyLifeSignGroupCode = await groupCodeRepo.findOneBy({ code: '02' }) as GroupCode;
+    const groupRepo = dataSource.getRepository(Group);
+    const dailyLifeSignGroup = await groupRepo.findOneBy({ id: 3 }) as Group;
     const userRepo = dataSource.getRepository(User);
     const adminUser = await userRepo.findOneBy({ name: '황지웅' }) as User;
-    let count = 1;
 
-    const dailyLifeSign = [...processedData, ...processedDataHadComma].map(({ regDate, words, subDescription }, index) => {
+    const dailyLifeSign = [...processedData, ...processedDataHadComma].map(({ regDate, words, subDescription }) => {
       const sign = new Sign();
-      sign.groupCode = dailyLifeSignGroupCode;
+      sign.group = dailyLifeSignGroup;
       sign.regisDate = new Date(regDate);
       sign.updateDate = new Date(regDate);
       sign.videoUrl = subDescription;
       sign.register = adminUser;
-      sign.id = index + 1;
 
       const definitions = words.map(word => {
         const definition = new Definition();
-        definition.id = count;
-        count += 1;
-        definition.groupCode = dailyLifeSignGroupCode;
+        definition.group = dailyLifeSignGroup;
         definition.sign = sign;
         definition.register = adminUser;
         definition.updateDate = new Date(regDate);

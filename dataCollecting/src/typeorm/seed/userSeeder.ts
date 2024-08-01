@@ -4,15 +4,16 @@ import { type DataSource } from 'typeorm';
 
 import { User } from '../entity/user';
 
-const initialUser = [{
-  email: 'woong8249@gmail.com', password: 'aa', name: '황지웅', location: '서울', regisDate: new Date(),
-},
+const initialUser = [
+  {
+    email: 'woong8249@gmail.com', password: 'aa', name: '황지웅', location: '서울', regisDate: new Date(),
+  },
 ];
 
 export class UserSeeder implements Seeder {
   public async run(_dataSource: DataSource) {
-    const groupCodeRepository = _dataSource.getRepository(User);
-    await groupCodeRepository.insert(initialUser);
+    const groupRepository = _dataSource.getRepository(User);
+    await groupRepository.insert(initialUser);
   }
 }
 export default async function seedUser(dataSource: DataSource) {

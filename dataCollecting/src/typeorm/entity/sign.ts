@@ -1,21 +1,20 @@
-// entity/sign.ts
 import {
-  Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn,
+  Column, Entity, JoinColumn, ManyToOne, OneToMany,
+  PrimaryGeneratedColumn,
 
 } from 'typeorm';
 
 import { Definition } from './definition';
-import { GroupCode } from './groupCode';
+import { Group } from './group';
 import { User } from './user';
 
 @Entity({ name: 'tn_sign' })
 export class Sign {
-  @PrimaryColumn({ name: 'grp_cd', type: 'varchar', length: 2 })
-  @JoinColumn({ name: 'grp_cd', referencedColumnName: 'code' })
-  @ManyToOne(() => GroupCode, group => group.signs)
-  groupCode: GroupCode;
+  @JoinColumn({ name: 'grp_id', referencedColumnName: 'id' })
+  @ManyToOne(() => Group, group => group.signs)
+  group: Group;
 
-  @PrimaryColumn({ name: 'sign_id', type: 'int' })
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ name: 'video_url', type: 'varchar', length: 255 })

@@ -20,11 +20,8 @@ export class Image {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ name: 'bucket_nm', type: 'varchar', length: 50 })
-    bucketName: string;
-
-    @Column({ name: 'obj_nm', type: 'varchar', length: 50 })
-    objectName: string;
+    @Column({ name: 'obj_url', type: 'varchar', length: 255 })
+    objectUrl: string;
 
     @Column({ name: 'rmrk', type: 'varchar', length: 100 })
     remark: string;

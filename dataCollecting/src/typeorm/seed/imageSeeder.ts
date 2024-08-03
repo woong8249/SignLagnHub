@@ -4,8 +4,27 @@ import { type DataSource } from 'typeorm';
 
 import { Group } from '../entity/group';
 import { Image } from '../entity/image';
+import config from '../../config/config';
 
-// bucketName: 'woong8249@gmail.com'
+const { minio } = config;
+
+interface MinIOURL {
+  protocol?: string;
+  baseURL?: string;
+  port?: number;
+  bucketName?: string;
+  objectName?: string;
+}
+
+function createURL({
+  protocol = minio.protocol,
+  baseURL = minio.baseURL,
+  port = minio.port,
+  bucketName = minio.bucketName,
+  objectName,
+}: MinIOURL): string {
+  return `${protocol}://${baseURL}:${port}/${bucketName}/${objectName}`;
+}
 
 const initialImage = [
   { objectName: 'test-logo.png', remark: '텍스트 로고' },
@@ -38,7 +57,7 @@ export class ImageSeeder implements Seeder {
     const imageRepo = dataSource.getRepository(Image);
     const groupRepo = dataSource.getRepository(Group);
     const initImageGroup = await groupRepo.findOneBy({ id: 4 }) as Group;
-    await imageRepo.insert(initialImage.map(item => ({ bucketName: 'basic-sign-images', ...item, group: initImageGroup })));
+    await imageRepo.insert(initialImage.map(({ objectName, remark }) => ({ group: initImageGroup, remark, objectUrl: createURL({ objectName }) })));
   }
 }
 

@@ -22,10 +22,18 @@ const config = {
     password: required('VITE_DB_PASSWORD', undefined) as string,
     database: required('VITE_DB_DATABASE', undefined) as string,
   },
-  sign: {
-    daily: required('VITE_SIGN_LAN_DAILY_SERVICE_KEY', undefined),
+  dailySign: {
+    serviceKey: required('VITE_SIGN_LAN_DAILY_SERVICE_KEY', undefined),
   },
-  apiKey: required('VITE_GPT_API_KEY', undefined) as string,
+  gpt: {
+    apiKey: required('VITE_GPT_API_KEY', undefined) as string,
+  },
+  minio: {
+    protocol: required('VITE_MINIO_PROTOCOL', undefined) as string,
+    baseURL: required('VITE_MINIO_BASEURL', undefined) as string,
+    port: required('VITE_MINIO_PORT', undefined) as number,
+    bucketName: required('VITE_MINIO_BUCKET_NAME', undefined) as string,
+  },
 };
 
 console.log('config :', config);

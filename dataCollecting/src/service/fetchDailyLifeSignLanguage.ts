@@ -18,9 +18,9 @@ type Response ={
     }
   }
 }
-const { daily } = config.sign;
+const { serviceKey } = config.dailySign;
 export async function fetchDailyLifeSignLanguage(numOfRows = 100, pageNo = 1) :Promise<Record<'response', Response>| null> {
-  const baseURL = `http://api.kcisa.kr/openapi/service/rest/meta13/getCTE01701?serviceKey=${daily}&numOfRows=${numOfRows}&pageNo=${pageNo}`;
+  const baseURL = `http://api.kcisa.kr/openapi/service/rest/meta13/getCTE01701?serviceKey=${serviceKey}&numOfRows=${numOfRows}&pageNo=${pageNo}`;
   const option = {
     headers: {
       Accept: 'application/json',

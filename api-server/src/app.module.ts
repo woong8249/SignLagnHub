@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { DatabasesModule } from './database/databases.module';
 import { ConfigModule } from './config/config.module';
 import { LoggerModule } from './loggers/loggers.module';
+import { VideosModule } from './videos/videos.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { LoggerModule } from './loggers/loggers.module';
     GroupsModule,
     ImagesModule,
     UsersModule,
+    VideosModule,
   ],
 })
 export class AppModule {}

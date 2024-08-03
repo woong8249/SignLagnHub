@@ -22,7 +22,6 @@ export class ImagesService {
     const imagesStoreInfo = await this.imageRepo.findBy({
       group: initImageGroup,
     });
-    this.myLogger.log(123);
     return imagesStoreInfo;
   }
 }

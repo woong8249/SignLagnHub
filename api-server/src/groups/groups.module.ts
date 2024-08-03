@@ -5,4 +5,4 @@ import { Group } from './group.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Group])],
 })
-export class Groups {}
+export class GroupsModule {}

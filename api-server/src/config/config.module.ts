@@ -1,5 +1,5 @@
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
-import { getConfig } from './config.service';
+import { ConfigService, getConfig } from './config.service';
 import { Module } from '@nestjs/common';
 
 const nodeENV = process.env['NODE_ENV'] || 'production';
@@ -18,6 +18,7 @@ const envFilePath =
       load: [getConfig],
     }),
   ],
+  providers: [ConfigService],
   exports: [NestConfigModule],
 })
 export class ConfigModule {}

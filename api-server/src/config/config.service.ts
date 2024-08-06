@@ -1,4 +1,5 @@
-import { Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { MyLogger } from 'src/loggers/logger.service';
 
 function required(
   key: string,
@@ -23,9 +24,9 @@ function required(
 export function getConfig() {
   const config = {
     node: {
-      env: required('NODE_ENV'),
-      port: required('NODE_PORT'),
-      logLevel: required('NODE_LOG_LEVEL'),
+      env: required('NODE_ENV') as string,
+      port: required('NODE_PORT') as string,
+      logLevel: required('NODE_LOG_LEVEL') as string,
     },
     typeorm: {
       type: 'mysql' as const,
@@ -44,8 +45,14 @@ export function getConfig() {
       secretKey: required('MINIO_SECRET_KEY') as string,
     },
   };
-
-  const logger = new Logger('ConfigService');
-  logger.log(config);
   return config;
+}
+
+@Injectable()
+export class ConfigService {
+  constructor(private logger: MyLogger) {
+    logger.setContext(ConfigService.name);
+    this.logger.debug(this.getConfig());
+  }
+  getConfig = () => getConfig();
 }

@@ -15,6 +15,7 @@
   "author": "jiwoong",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "mysql2": "^3.10.2",
     "openai": "^4.52.7",
     "reflect-metadata": "^0.2.2",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@tsconfig/node21": "^21.0.3",
     "@tsconfig/strictest": "^2.0.5",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.14.12"
   }
 }

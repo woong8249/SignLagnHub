@@ -22,6 +22,9 @@ const config = {
     password: required('VITE_DB_PASSWORD', undefined) as string,
     database: required('VITE_DB_DATABASE', undefined) as string,
   },
+  admin: {
+    password: required('VITE_ADMIN_PASSWORD', undefined) as string,
+  },
   dailySign: {
     serviceKey: required('VITE_SIGN_LAN_DAILY_SERVICE_KEY', undefined),
   },

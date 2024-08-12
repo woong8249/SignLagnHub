@@ -1,19 +1,24 @@
 /* eslint-disable class-methods-use-this */
 import { type Seeder, runSeeders } from 'typeorm-extension';
 import { type DataSource } from 'typeorm';
+import bcrypt from 'bcrypt';
 
 import { User } from '../entity/user';
+import config from '../../config/config';
 
-const initialUser = [
-  {
-    email: 'woong8249@gmail.com', password: 'aa', name: '황지웅', location: '서울', regisDate: new Date(),
-  },
-];
+const { password } = config.admin;
+const initialUser = {
+  email: 'signLanAdmin@gmail.com',
+  password: bcrypt.hashSync(password, 10),
+  name: '관리자',
+  role: 'admin',
+  location: '서울',
+};
 
 export class UserSeeder implements Seeder {
   public async run(_dataSource: DataSource) {
     const groupRepository = _dataSource.getRepository(User);
-    await groupRepository.insert(initialUser);
+    await groupRepository.insert(initialUser as User);
   }
 }
 export default async function seedUser(dataSource: DataSource) {

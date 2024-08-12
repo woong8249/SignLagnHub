@@ -48,7 +48,6 @@ export class User {
     name: 'loc',
     type: 'varchar',
     length: 50,
-    nullable: true,
   })
   location: string;
 

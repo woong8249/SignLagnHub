@@ -36,7 +36,7 @@ export class User {
     name: string;
 
     @Column({
-      name: 'loc', type: 'varchar', length: 50, nullable: true,
+      name: 'loc', type: 'varchar', length: 50,
     })
     location: string;
 

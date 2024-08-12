@@ -1,5 +1,11 @@
 // entity/user
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { Definition } from '../definitions/definition.entity';
 import { Sign } from '../signs/sign.entity';
@@ -20,6 +26,7 @@ export class User {
     name: 'pwd',
     type: 'varchar',
     length: 255,
+    select: false,
   })
   password: string;
 
@@ -45,7 +52,7 @@ export class User {
   })
   location: string;
 
-  @Column({ name: 'reg_dt', type: 'timestamp' })
+  @CreateDateColumn({ name: 'reg_dt', type: 'timestamp' })
   regisDate: Date;
 
   @OneToMany(() => Sign, (sign) => sign.register, { cascade: true })

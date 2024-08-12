@@ -1,6 +1,7 @@
 // entity/groupCode.ts
 import {
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -21,7 +22,7 @@ export class Group {
   @Column({ name: 'rmrk', type: 'varchar', length: 100 })
   remark: string;
 
-  @Column({ name: 'reg_dt', type: 'timestamp' })
+  @CreateDateColumn({ name: 'reg_dt', type: 'timestamp' })
   regisDate: Date;
 
   @OneToMany(() => Sign, sign => sign.group, { cascade: true })

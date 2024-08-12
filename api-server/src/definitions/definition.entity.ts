@@ -1,6 +1,7 @@
 // entity/definition
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -25,7 +26,7 @@ export class Definition {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'def', type: 'json' })
+  @CreateDateColumn({ name: 'reg_dt', type: 'timestamp' })
   definition: string;
 
   @Column({ name: 'ref_word', type: 'varchar', length: 50 })

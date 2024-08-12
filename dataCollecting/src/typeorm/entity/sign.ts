@@ -1,6 +1,7 @@
 import {
-  Column, Entity, JoinColumn, ManyToOne, OneToMany,
+  Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 
 } from 'typeorm';
 
@@ -24,10 +25,10 @@ export class Sign {
   @JoinColumn({ name: 'reg_by', referencedColumnName: 'id' })
   register: User;
 
-  @Column({ name: 'reg_dt', type: 'timestamp' })
+  @CreateDateColumn({ name: 'reg_dt', type: 'timestamp' })
   regisDate: Date;
 
-  @Column({ name: 'upd_dt', type: 'timestamp' })
+  @UpdateDateColumn({ name: 'upd_dt', type: 'timestamp' })
   updateDate: Date;
 
   @OneToMany(() => Definition, def => def.sign, { cascade: true })

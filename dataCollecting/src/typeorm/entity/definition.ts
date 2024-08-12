@@ -1,6 +1,7 @@
 // entity/definition
 import {
-  Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,
+  Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { Group } from './group';
@@ -32,9 +33,9 @@ export class Definition {
     @JoinColumn({ name: 'reg_by', referencedColumnName: 'id' })
     register: User;
 
-    @Column({ name: 'reg_dt', type: 'timestamp' })
+    @CreateDateColumn({ name: 'reg_dt', type: 'timestamp' })
     regisDate: Date;
 
-    @Column({ name: 'upd_dt', type: 'timestamp' })
+    @UpdateDateColumn({ name: 'upd_dt', type: 'timestamp' })
     updateDate: Date;
 }

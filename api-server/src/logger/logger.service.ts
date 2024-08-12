@@ -11,7 +11,7 @@ import { ConfigService } from '@nestjs/config';
 export class MyLogger extends ConsoleLogger implements LoggerService {
   constructor(private configService: ConfigService) {
     super();
-    const level = this.configService.get<LogLevel>('node.logLevel');
+    const level = this.configService.get<LogLevel>('app.logLevel');
     this.setLogLevels([level]);
   }
 }

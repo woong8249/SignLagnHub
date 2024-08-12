@@ -6,7 +6,7 @@ import { Public } from 'src/auth/decorator/auth-public.decorator';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 const successfulMessage = { message: 'successful!' };
-const createUserAPI200Response = {
+const createUserAPI201Response = {
   status: 201,
   description: 'successful!.',
   schema: { example: successfulMessage },
@@ -40,7 +40,7 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
   @ApiResponse(createUserAPI400Response)
   @ApiResponse(createUserAPI409Response)
-  @ApiResponse(createUserAPI200Response)
+  @ApiResponse(createUserAPI201Response)
   @ApiOperation({ summary: 'join the membership' })
   @Public()
   @Post()

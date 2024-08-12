@@ -13,7 +13,6 @@ export class User {
     name: 'email',
     type: 'varchar',
     length: 50,
-    nullable: true,
   })
   email: string;
 
@@ -21,7 +20,6 @@ export class User {
     name: 'pwd',
     type: 'varchar',
     length: 255,
-    nullable: true,
   })
   password: string;
 
@@ -29,7 +27,6 @@ export class User {
     name: 'role',
     type: 'enum',
     enum: ['user', 'admin'],
-    nullable: true,
   })
   role: 'user' | 'admin';
 
@@ -37,14 +34,18 @@ export class User {
     name: 'nm',
     type: 'varchar',
     length: 50,
-    nullable: true,
   })
   name: string;
 
-  @Column({ name: 'loc', type: 'varchar', length: 50 })
+  @Column({
+    name: 'loc',
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
   location: string;
 
-  @Column({ name: 'reg_dt', type: 'timestamp', nullable: true })
+  @Column({ name: 'reg_dt', type: 'timestamp' })
   regisDate: Date;
 
   @OneToMany(() => Sign, (sign) => sign.register, { cascade: true })

@@ -15,29 +15,31 @@ export class User {
     id: number;
 
     @Column({
-      name: 'email', type: 'varchar', length: 50, nullable: true,
+      name: 'email', type: 'varchar', length: 50,
     })
     email: string;
 
     @Column({
-      name: 'pwd', type: 'varchar', length: 255, nullable: true,
+      name: 'pwd', type: 'varchar', length: 255,
     })
     password: string;
 
     @Column({
-      name: 'role', type: 'enum', enum: ['user', 'admin'], nullable: true,
+      name: 'role', type: 'enum', enum: ['user', 'admin'],
     })
     role: 'user' | 'admin';
 
     @Column({
-      name: 'nm', type: 'varchar', length: 50, nullable: true,
+      name: 'nm', type: 'varchar', length: 50,
     })
     name: string;
 
-    @Column({ name: 'loc', type: 'varchar', length: 50 })
+    @Column({
+      name: 'loc', type: 'varchar', length: 50, nullable: true,
+    })
     location: string;
 
-    @Column({ name: 'reg_dt', type: 'timestamp', nullable: true })
+    @Column({ name: 'reg_dt', type: 'timestamp' })
     regisDate: Date;
 
     @OneToMany(() => Sign, sign => sign.register, { cascade: true })

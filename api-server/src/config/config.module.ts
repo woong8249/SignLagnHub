@@ -2,7 +2,7 @@ import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import { ConfigService, getConfig } from './config.service';
 import { Module } from '@nestjs/common';
 
-const nodeENV = process.env['NODE_ENV'] || 'production';
+const nodeENV = process.env['APP_ENV'] || 'production';
 const envFilePath =
   nodeENV === 'development'
     ? '.development.env'

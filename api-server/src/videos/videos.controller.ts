@@ -7,7 +7,7 @@ import {
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
-import { MyLogger } from 'src/loggers/logger.service';
+import { MyLogger } from 'src/logger/logger.service';
 
 @Controller('videos')
 export class VideosController {

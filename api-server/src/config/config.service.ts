@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MyLogger } from 'src/loggers/logger.service';
+import { MyLogger } from 'src/logger/logger.service';
 
 function required(
   key: string,
@@ -23,10 +23,15 @@ function required(
 
 export function getConfig() {
   const config = {
-    node: {
-      env: required('NODE_ENV') as string,
-      port: required('NODE_PORT') as string,
-      logLevel: required('NODE_LOG_LEVEL') as string,
+    app: {
+      env: required('APP_ENV') as string,
+      port: required('APP_PORT') as string,
+      logLevel: required('APP_LOG_LEVEL') as string,
+    },
+    cookie: { secret: required('COOKIE_SECRET') as string },
+    jwt: {
+      secret: required('JWT_SECRET'),
+      expiresIn: required('JWT_EXPIRES_IN'),
     },
     typeorm: {
       type: 'mysql' as const,

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Image } from './image.entity';
 import { Repository } from 'typeorm';
 import { Group } from 'src/groups/group.entity';
-import { MyLogger } from '../loggers/logger.service';
+import { MyLogger } from '../logger/logger.service';
 
 @Injectable()
 export class ImagesService {

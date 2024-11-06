@@ -57,7 +57,7 @@ export function getConfig() {
 export class ConfigService {
   constructor(private logger: MyLogger) {
     logger.setContext(ConfigService.name);
-    this.logger.debug(this.getConfig());
+    this.logger.log(this.getConfig());
   }
   getConfig = () => getConfig();
 }

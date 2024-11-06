@@ -12,5 +12,13 @@
             "name": "signLangHub-dictionary-nest-server",
             "path": "./signLangHub-dictionary-nest-server"
         },
+        {
+            "name": "signLangHub-matching-nest-server",
+            "path": "./signLangHub-matching-nest-server"
+        },
+        {
+            "name": "signLangHub-matching-react-client",
+            "path": "./signLangHub-matching-react-client"
+        },
     ],
 }

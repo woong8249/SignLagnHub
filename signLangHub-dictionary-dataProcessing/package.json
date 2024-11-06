@@ -1,5 +1,5 @@
 {
-  "name": "signlanhub-datacollectiong",
+  "name": "signlanghub-dictionary-datacollectiong",
   "version": "1.0.0",
   "description": "DB record migration task",
   "main": "index.js",

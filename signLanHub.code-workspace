@@ -1,16 +1,16 @@
 {
     "folders": [
         {
-            "name": "signLanHub",
+            "name": "signLangHub",
             "path": "."
         },
         {
-            "name": "signLanHub-dictionary-dataProcessing",
-            "path": "./signLanHub-dictionary-dataProcessing"
+            "name": "signLangHub-dictionary-dataProcessing",
+            "path": "./signLangHub-dictionary-dataProcessing"
         },
         {
-            "name": "signLanHub-dictionary-nest-server",
-            "path": "./signLanHub-dictionary-nest-server"
+            "name": "signLangHub-dictionary-nest-server",
+            "path": "./signLangHub-dictionary-nest-server"
         },
     ],
 }

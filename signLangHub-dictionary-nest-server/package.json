@@ -1,7 +1,7 @@
 {
-  "name": "api-server",
+  "name": "signlanghub-dictionary-nest-server",
   "version": "0.0.1",
-  "description": "API Server",
+  "description": "signlang",
   "author": "Jiwoong",
   "private": true,
   "license": "UNLICENSED",

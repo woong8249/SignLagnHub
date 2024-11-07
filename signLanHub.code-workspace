@@ -5,12 +5,20 @@
             "path": "."
         },
         {
-            "name": "signLangHub-dictionary-dataProcessing",
-            "path": "./signLangHub-dictionary-dataProcessing"
+            "name": "dictionary-dataProcessing",
+            "path": "./dictionary-dataProcessing"
         },
         {
-            "name": "signLangHub-dictionary-nest-server",
-            "path": "./signLangHub-dictionary-nest-server"
+            "name": "dictionary-nest-server",
+            "path": "./dictionary-nest-server"
+        },
+        {
+            "name": "matching-nest-server",
+            "path": "./matching-nest-server"
+        },
+        {
+            "name": "matching-react-client",
+            "path": "./matching-react-client"
         },
     ],
 }

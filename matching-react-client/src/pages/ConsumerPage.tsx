@@ -1,7 +1,29 @@
-import TopNavBar from '@layouts/TopNavBar';
-import ButtonGrid from '@layouts/ButtonGrid';
+import TopNavBar from '@layouts/common/TopNavBar';
+import ButtonGrid from '@layouts/consumer/ButtonGrid';
+import { useConsumer } from '@hooks/useConsumer';
+import LoadingSpinner from '@components/LoadingSpinner';
+import { useEffect } from 'react';
 
-export default function HomePage() {
+export default function ConsumerPage() {
+  const { consumer, login, isLoading } = useConsumer();
+
+  useEffect(() => {
+    if (!consumer) {
+      login({
+        id: 1,
+        name: '최별규',
+        profileImage: 'https://via.placeholder.com/150',
+        role: 'consumer',
+      });
+    }
+
+    window.history.replaceState(null, '', '/');
+  }, [consumer, login]);
+
+  if (isLoading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
+
   return (
     <div className="relative bg-[url('background.webp')] bg-cover bg-center min-h-screen m-auto">
       {/* Dark overlay over background */}
@@ -19,7 +41,7 @@ export default function HomePage() {
           {/* Introduce */}
           <div className='w-full my-[2rem]' >
             <div className='text-gray-300 mb-2'>
-              <span className="text-2xl">최별규</span>
+              <span className="text-2xl">{consumer?.name}</span>
               <span>{' 님'}</span>
             </div>
 

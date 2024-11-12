@@ -6,12 +6,24 @@ import {
 import './index.css';
 
 import ErrorPage from '@pages/ErrorPage';
-import HomePage from '@pages/HomePage';
+import ConsumerPage from '@pages/ConsumerPage';
+import { ProviderPage } from '@pages/ProviderPage';
+import MainPage from '@pages/MainPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />,
+    element: <MainPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/provider',
+    element: <ProviderPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/consumer',
+    element: <ConsumerPage />,
     errorElement: <ErrorPage />,
   },
 ]);

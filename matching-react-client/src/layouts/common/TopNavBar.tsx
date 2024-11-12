@@ -20,8 +20,7 @@ export default function TopNavBar() {
   return (
     <div
       className={`z-10 fixed top-0 left-0 w-full flex items-center justify-between px-5 py-3 
-        ${isScrolled ? 'bg-white text-black' : ' text-white'}`}
-    >
+        ${isScrolled ? 'bg-white text-black' : ' text-white'}`}>
       <Logo />
 
       <div className={`flex gap-4 ${isScrolled ? 'text-black' : ' text-gray-300'}`}>

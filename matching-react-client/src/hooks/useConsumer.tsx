@@ -1,36 +1,31 @@
-import { Consumer } from '@typings/user';
 import useSWR from 'swr';
+import { userApi } from '@utils/userApi';
+import { ConsumerWithAllInfo } from '@typings/User';
 
-// 페이크 유저 데이터 가져오기
-const fetchUser = (): Consumer | null => {
-  if (typeof window !== 'undefined') {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+// id 1번 사용자를 가져오는 함수
+
+const fetchConsumer = async (): Promise<ConsumerWithAllInfo | null> => {
+  try {
+    const user = await userApi.getUserWithAllInfo(1);
+    return user || null;
+  } catch (error) {
+    console.error('Failed to fetch user:', error);
+    return null;
   }
-  return null;
 };
 
 export function useConsumer() {
-  const { data, error, mutate } = useSWR('user', fetchUser, {
+  const { data, error, isLoading } = useSWR('consumer', fetchConsumer, {
     fallbackData: null,
     revalidateOnFocus: false,
   });
-
-  const login = (user: Consumer) => {
-    localStorage.setItem('user', JSON.stringify(user));
-    mutate(user);
-  };
-
-  const logout = () => {
-    localStorage.removeItem('user');
-    mutate(null);
-  };
+  if (error) {
+    console.error(error);
+  }
 
   return {
     consumer: data,
-    isLoading: !error && !data,
-    isError: error,
-    login,
-    logout,
+    isLoading,
+    error,
   };
 }

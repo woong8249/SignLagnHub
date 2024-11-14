@@ -9,6 +9,11 @@ import ErrorPage from '@pages/ErrorPage';
 import ConsumerPage from '@pages/ConsumerPage';
 import { ProviderPage } from '@pages/ProviderPage';
 import MainPage from '@pages/MainPage';
+import { BookingPage } from '@pages/BookingPage';
+import { initData } from '@utils/initData';
+
+// clearLocalStorage();
+await initData();
 
 const router = createBrowserRouter([
   {
@@ -17,13 +22,18 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: '/consumer',
+    element: <ConsumerPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
     path: '/provider',
     element: <ProviderPage />,
     errorElement: <ErrorPage />,
   },
   {
-    path: '/consumer',
-    element: <ConsumerPage />,
+    path: '/booking',
+    element: <BookingPage />,
     errorElement: <ErrorPage />,
   },
 ]);

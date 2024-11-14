@@ -1,5 +1,5 @@
 import { FakeApi } from '@utils/fakeApi';
-import { User } from '@typings/User';
+import { ConsumerWithAllInfo, ProviderWithAllInfo, User } from '@typings/User';
 import { Center } from '@typings/Center';
 import { Booking } from '@typings/Booking';
 import { Notification } from '@typings/Notification';
@@ -17,35 +17,36 @@ export class UserApi extends FakeApi<User> {
   /**
    * 특정 사용자의 모든 관련 정보를 반환
    */
-  async getUserWithAllInfo(id: number): Promise<
-    User & {
-      center?: Center;
-      bookings: Booking[];
-      notifications: Notification[];
-      workSchedules?: WorkSchedule[];
-    }
-  > {
+  async getUserWithAllInfo(id: number): Promise<ProviderWithAllInfo|ConsumerWithAllInfo> {
     const user = await this.getById(id);
     if (!user) throw new Error(`User with id ${id} not found`);
 
-    const center = await centerApi.getById(user.centerId);
+    const center = await centerApi.getById(user.centerId) as Center;
     const bookings = (await bookingApi.getAll()).filter(
       (booking) => booking.providerId === id || booking.consumerId === id,
     );
-    const notifications = (await notificationApi.getAll()).filter(
+    const notifications: Notification[] = (await notificationApi.getAll()).filter(
       (notification) => notification.userId === id,
     );
 
-    let workSchedules: WorkSchedule[] | undefined;
     if (user.role === 'provider') {
-      workSchedules = (await workScheduleApi.getAll()).filter(
+      const workSchedules = (await workScheduleApi.getAll()).filter(
         (schedule) => schedule.providerId === id,
       );
+      return {
+        ...user,
+        center,
+        bookings,
+        notifications,
+        workSchedules,
+      } as ProviderWithAllInfo;
     }
-
     return {
-      ...user, center, bookings, notifications, workSchedules,
-    };
+      ...user,
+      center,
+      bookings,
+      notifications,
+    } as ConsumerWithAllInfo;
   }
 
   /**

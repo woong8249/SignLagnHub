@@ -3,26 +3,26 @@ import ButtonGrid from '@layouts/consumer/ButtonGrid';
 import { useConsumer } from '@hooks/useConsumer';
 import LoadingSpinner from '@components/LoadingSpinner';
 import { useEffect } from 'react';
+import ErrorPage from './ErrorPage';
+import { ConsumerWithAllInfo } from '@typings/User';
 
 export default function ConsumerPage() {
-  const { consumer, login, isLoading } = useConsumer();
+  const {
+    consumer, isLoading, error,
+  } = useConsumer();
 
   useEffect(() => {
-    if (!consumer) {
-      login({
-        id: 1,
-        name: '최별규',
-        profileImage: 'https://via.placeholder.com/150',
-        role: 'consumer',
-      });
-    }
-
     window.history.replaceState(null, '', '/');
-  }, [consumer, login]);
+  }, [consumer]);
 
   if (isLoading) {
     return <LoadingSpinner></LoadingSpinner>;
   }
+
+  if (error) {
+    return <ErrorPage></ErrorPage>;
+  }
+  const fetchedConsumer = consumer as ConsumerWithAllInfo;
 
   return (
     <div className="relative bg-[url('background.webp')] bg-cover bg-center min-h-screen m-auto">
@@ -32,16 +32,19 @@ export default function ConsumerPage() {
 
       <TopNavBar />
 
-      <section className="sm:flex sm:flex-col sm:justify-center pt-[6rem] w-[90vw] h-[90vh] px-10 relative z-5 text-white m-auto">
+      <section
+        className={`
+          sm:flex sm:flex-col sm:justify-center 
+          relative z-5 pt-[6rem] w-[90vw] h-[90vh] px-10 m-auto
+          text-white`}>
         {/* h1 */}
         <h1 className='responsive-h1 font-bold mb-2'>SignLangHub 통역사 예약 서비스</h1>
 
         {/* Contents */}
         <div className='xl:flex xl:items-center xl:justify-center'>
-          {/* Introduce */}
           <div className='w-full my-[2rem]' >
             <div className='text-gray-300 mb-2'>
-              <span className="text-2xl">{consumer?.name}</span>
+              <span className="text-2xl">{fetchedConsumer.name}</span>
               <span>{' 님'}</span>
             </div>
 
@@ -49,11 +52,8 @@ export default function ConsumerPage() {
           </div>
 
           <ButtonGrid />
-
         </div>
-
       </section>
-
     </div>
   );
 }

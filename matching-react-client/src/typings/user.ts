@@ -1,21 +1,7 @@
-export type Consumer = {
-    id:number
-    role:'consumer'
-    name:string
-    address:[string, string]
-    profileImage:string
-    serviceOn: boolean
-}
-
-export type Provider = {
-    id: number;
-    role: 'interpreter';
-    name: string;
-    affiliatedCenterId: number; // 소속센터
-    profileImage: string;
-    currentCoordinates: [string, string]; // 현재좌표
-    serviceOn: boolean;
-}
+import { Booking } from '@typings/Booking';
+import { Center } from '@typings/Center';
+import { WorkSchedule } from '@typings/WorkSchedule';
+import { Notification } from '@typings/Notification';
 
 export type User = {
     id: number;
@@ -30,3 +16,13 @@ export type User = {
     centerId: number; // 소속 센터 ID (provider만 해당)
     currentCoordinates: [number, number] // 현재좌표 [위도,경도]
   };
+
+export type ConsumerWithAllInfo =User & {
+    center: Center;
+    bookings: Booking[];
+    notifications: Notification[];
+  }
+
+export type ProviderWithAllInfo =ConsumerWithAllInfo & {
+    workSchedules: WorkSchedule[];
+  }

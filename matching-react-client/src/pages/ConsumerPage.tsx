@@ -1,27 +1,21 @@
 import TopNavBar from '@layouts/common/TopNavBar';
 import ButtonGrid from '@layouts/consumer/ButtonGrid';
 import { useConsumer } from '@hooks/useConsumer';
-import LoadingSpinner from '@components/LoadingSpinner';
 import { useEffect } from 'react';
 import ErrorPage from './ErrorPage';
 import { ConsumerWithAllInfo } from '@typings/User';
 
 export default function ConsumerPage() {
-  const {
-    consumer, isLoading, error,
-  } = useConsumer();
+  const { consumer, error } = useConsumer();
 
   useEffect(() => {
     window.history.replaceState(null, '', '/');
   }, [consumer]);
 
-  if (isLoading) {
-    return <LoadingSpinner></LoadingSpinner>;
-  }
-
   if (error) {
     return <ErrorPage></ErrorPage>;
   }
+
   const fetchedConsumer = consumer as ConsumerWithAllInfo;
 
   return (

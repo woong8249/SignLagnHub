@@ -7,8 +7,8 @@ export class NotificationApi extends FakeApi<Notification> {
   }
 
   // 특정 사용자의 모든 알림 반환
-  async getAllNotificationByUserID(userId: number): Promise<Notification[]> {
-    const notifications = await this.getAll();
+  getAllNotificationByUserID(userId: number): Notification[] {
+    const notifications = this.getAll();
     return notifications.filter((notification) => notification.userId === userId);
   }
 }

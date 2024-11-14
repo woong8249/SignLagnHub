@@ -13,7 +13,7 @@ import { BookingPage } from '@pages/BookingPage';
 import { initData } from '@utils/initData';
 
 // clearLocalStorage();
-await initData();
+initData();
 
 const router = createBrowserRouter([
   {

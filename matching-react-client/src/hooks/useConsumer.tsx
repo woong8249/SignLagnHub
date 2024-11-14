@@ -1,12 +1,9 @@
-import useSWR from 'swr';
 import { userApi } from '@utils/userApi';
 import { ConsumerWithAllInfo } from '@typings/User';
 
-// id 1번 사용자를 가져오는 함수
-
-const fetchConsumer = async (): Promise<ConsumerWithAllInfo | null> => {
+const fetchConsumer = (): ConsumerWithAllInfo | null => {
   try {
-    const user = await userApi.getUserWithAllInfo(1);
+    const user = userApi.getUserWithAllInfo(1); // 항상 id 1번 사용자
     return user || null;
   } catch (error) {
     console.error('Failed to fetch user:', error);
@@ -15,17 +12,10 @@ const fetchConsumer = async (): Promise<ConsumerWithAllInfo | null> => {
 };
 
 export function useConsumer() {
-  const { data, error, isLoading } = useSWR('consumer', fetchConsumer, {
-    fallbackData: null,
-    revalidateOnFocus: false,
-  });
-  if (error) {
-    console.error(error);
-  }
+  const consumer = fetchConsumer();
 
   return {
-    consumer: data,
-    isLoading,
-    error,
+    consumer,
+    error: consumer ? null : 'Failed to load consumer',
   };
 }

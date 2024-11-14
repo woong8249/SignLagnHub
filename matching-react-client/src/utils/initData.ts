@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-/* eslint-disable no-await-in-loop */
+
 import { centerApi } from '@utils/centerApi';
 import { userApi } from '@utils/userApi';
 import { workScheduleApi } from '@utils/workScheduleApi';
@@ -45,9 +45,9 @@ function generateWorkSchedulesForTwoWeeks(startDate: Date, providerId: number): 
   return schedules;
 }
 
-export async function initData() {
+export function initData() {
   // Center 데이터가 이미 있는지 확인
-  const centers = await centerApi.getAll();
+  const centers = centerApi.getAll();
   if (centers.length === 0) {
     const center: Center = {
       id: 1,
@@ -59,11 +59,11 @@ export async function initData() {
       coordinates: 서울중구CenterCoordinates,
     };
 
-    await centerApi.create(center);
+    centerApi.create(center);
   }
 
   // User 데이터가 이미 있는지 확인
-  const users = await userApi.getAll();
+  const users = userApi.getAll();
   if (users.length === 0) {
     // Consumer 생성
     const consumer: User = {
@@ -80,7 +80,7 @@ export async function initData() {
       currentCoordinates: 시연장소Coordinates,
     };
 
-    await userApi.create(consumer);
+    userApi.create(consumer);
 
     // Providers 생성
     for (let i = 2; i <= 7; i += 1) {
@@ -98,13 +98,13 @@ export async function initData() {
         currentCoordinates: getRandomCoordinates(...서울중구CenterCoordinates, 100),
       };
 
-      await userApi.create(provider);
+      userApi.create(provider);
 
       // WorkSchedule 생성
       const today = new Date();
       const schedules = generateWorkSchedulesForTwoWeeks(today, i);
       for (const schedule of schedules) {
-        await workScheduleApi.create(schedule);
+        workScheduleApi.create(schedule);
       }
     }
   }

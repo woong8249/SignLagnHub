@@ -8,7 +8,7 @@ import { User } from '@typings/User';
 import { WorkSchedule } from '@typings/WorkSchedule';
 import { getRandomCoordinates, getRandomKoreanName, getRandomPhoneNumber } from './getRandom';
 
-const 서울중구CenterCoordinates = [37.558781, 126.986769] as [number, number];
+const 서울중구CenterCoordinates = [37.5587304, 126.9867745] as [number, number];
 const 시연장소Coordinates = [37.568789, 126.978817] as [number, number];
 
 export function clearLocalStorage(): void {
@@ -95,7 +95,7 @@ export function initData() {
         profileImage: 'https://picsum.photos/200/200',
         serviceOn: false,
         centerId: 1,
-        currentCoordinates: getRandomCoordinates(...서울중구CenterCoordinates, 100),
+        currentCoordinates: getRandomCoordinates(...서울중구CenterCoordinates, 1000),
       };
 
       userApi.create(provider);

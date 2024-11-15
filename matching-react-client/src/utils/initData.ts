@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-restricted-syntax */
 
 import { centerApi } from '@utils/centerApi';
@@ -56,7 +57,27 @@ export function initData() {
       address: '서울특별시 중구 퇴계로20길41-11 남산쉼터 2층',
       phoneNumber: '02-3789-3268',
       videoCallNumber: '070-7947-0031',
-      coordinates: 서울중구CenterCoordinates,
+      coordinates: [37.558781, 126.986769],
+      images: ['https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20240813_286%2F1723523915788kGqup_JPEG%2F%25C1%25DF%25B1%25B8%25BC%25F6%25BE%25EE%25C5%25EB%25BF%25AA%25BC%25BE%25C5%25CD.jpg'],
+      businessHours: [
+        {
+          day: '월', open: '09:00', close: '18:00', breakTime: { start: '12:00', end: '13:00' },
+        },
+        {
+          day: '화', open: '09:00', close: '18:00', breakTime: { start: '12:00', end: '13:00' },
+        },
+        {
+          day: '수', open: '09:00', close: '18:00', breakTime: { start: '12:00', end: '13:00' },
+        },
+        {
+          day: '목', open: '09:00', close: '18:00', breakTime: { start: '12:00', end: '13:00' },
+        },
+        {
+          day: '금', open: '09:00', close: '18:00', breakTime: { start: '12:00', end: '13:00' },
+        },
+        { day: '토', open: null, close: null }, // 정기휴무
+        { day: '일', open: null, close: null }, // 정기휴무
+      ],
     };
 
     centerApi.create(center);

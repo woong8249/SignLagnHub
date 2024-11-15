@@ -40,6 +40,10 @@ const customConfig = [
   jsxA11y.flatConfigs.recommended,
   {
     languageOptions: {
+      globals: {
+        google: 'readonly', // 'google' 전역 변수 정의 (읽기 전용)
+        window: 'readonly', // 브라우저 환경 전역 변수도 추가 가능
+      },
       parserOptions: {
       // Eslint doesn't supply ecmaVersion in `parser.js` `context.parserOptions`
       // This is required to avoid ecmaVersion < 2015 error or 'import' / 'export' error

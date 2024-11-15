@@ -29,7 +29,8 @@
       "@typings/*": ["src/typings/*"],
       "@sections/*": ["src/sections/*"],
       "@constants/*": ["src/constants/*"],
-      "@config/*": ["src/config/*"]
+      "@config/*": ["src/config/*"],
+      "@public/*": ["src/../public/*"],
     }
   },
   "include": ["src", "eslint.config.js"]

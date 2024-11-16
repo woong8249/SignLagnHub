@@ -3,6 +3,7 @@
 
 import { BookingProcess } from '@layouts/consumer/BookingProcess';
 import { Provider } from '@pages/BookingPage';
+import { FaPhoneAlt } from 'react-icons/fa';
 
 interface Prob {
     providers:Provider[]
@@ -27,10 +28,23 @@ export function BookingSection({ providers, handleProvideSelection }:Prob) {
             >
             <img src={provider.profileImage} alt='profile' className='w-[80px]' />
 
-            <div className='flex gap-2 items-center'>
-              <span className='text-base '>{provider.name}</span>
-              <span className='text-sm text-gray-500'>통역사님</span>
+            <div className='flex flex-col gap-2'>
+              <div>
+                <div className='flex gap-1 items-center justify-center'>
+                  <span className='text-base '>{provider.name}</span>
+                  <span className='text-xs text-gray-500'>통역사님</span>
+                </div>
+              </div>
+
+              <div className='flex items-center gap-3'>
+                <FaPhoneAlt className='w-3 h-3' />
+
+                <div className='text-xs text-gray-500'>
+                  {provider.phoneNumber}
+                </div>
+              </div>
             </div>
+
           </div>
 
           {provider.showBookingForm && (

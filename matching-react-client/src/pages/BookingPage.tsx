@@ -10,27 +10,27 @@ import { markerUrl } from '@constants/marker';
 import { FaPhoneVolume } from 'react-icons/fa6';
 import { FcVideoCall } from 'react-icons/fc';
 import { useImmer } from 'use-immer';
+import { DatePickerComponent } from '@layouts/consumer/DatePickerComponent';
+import { IoCalendarOutline } from 'react-icons/io5';
 
-export type Provider =Omit<ProviderWithAllInfo, 'center'> &{selected: boolean}
+export type Provider =Omit<ProviderWithAllInfo, 'center'> &
+{
+  selected: boolean
+  showBookingForm: boolean; // 예약 폼 표시 상태
+}
 
 export function BookingPage() {
   const { consumer, error } = useConsumer();
   const fetchedConsumer = consumer as ConsumerWithAllInfo;
   const { center } = fetchedConsumer;
-
-  const initProviders = userApi.getProvidersWithAllInfoByCenterId(center.id).map((item) => ({ ...item, selected: false }));
-
+  const initProviders = userApi.getProvidersWithAllInfoByCenterId(center.id).map((item) => ({ ...item, selected: false, showBookingForm: false }));
   const [providers, setProviders] = useImmer<Provider[]>(initProviders);
 
   function handleProvideSelection(provider:Provider) {
     setProviders((draft) => {
       draft.forEach((draftProvider) => {
-        if (draftProvider.selected) {
-          draftProvider.selected = false;
-        }
-        if (draftProvider.id === provider.id) {
-          draftProvider.selected = true;
-        }
+        draftProvider.selected = draftProvider.id === provider.id;
+        draftProvider.showBookingForm = draftProvider.id === provider.id ? !draftProvider.showBookingForm : false;
       });
     });
   }
@@ -43,9 +43,9 @@ export function BookingPage() {
     <div className="absolute inset-0 bg-[url('background.webp')] bg-cover bg-center z-0">
 
       <GoogleMapSection
-      consumer={fetchedConsumer}
+        consumer={fetchedConsumer}
       providers={providers}
-      onClickProvider={handleProvideSelection}
+        onClickProvider={handleProvideSelection}
       />
 
       {/* 메인 레이아웃 */}
@@ -115,7 +115,7 @@ export function BookingPage() {
             {providers.map((provider, index) => (
               <div key={index} >
                 <div
-                className={`flex items-center gap-4  border rounded-lg m-4 bg-white ${provider.selected ? 'border-blue-400 border-2' : 'border-gray-300'}`}
+                className={`flex items-center gap-4  border rounded-lg m-4 hover:bg-gray-200  bg-white ${provider.selected ? 'border-blue-400 border-2' : 'border-gray-300'}`}
                 role='button'
                 tabIndex={0}
                 onClick={(e) => {
@@ -125,12 +125,35 @@ export function BookingPage() {
                 >
                   <img src={provider.profileImage} alt='profile' className='w-[100px]' />
 
-                  <div className='flex gap-2'>
+                  <div className='flex gap-2 items-center'>
                     <span className='text-base text-gray-500'>{provider.name}</span>
                     <span className='text-base'>통역사님</span>
                   </div>
-
                 </div>
+
+                {provider.showBookingForm && (
+                <div className="p-4 border-t border-gray-200 bg-gray-50">
+                  <hr />
+
+                  <div className='flex items-center gap-2 p-3'>
+                    <IoCalendarOutline className='w-6 h-6' />
+                    <div className='text-lg font-bold'> 날짜를 선택해 주세요.</div>
+
+                  </div>
+
+                  {/* 예약 가능한 날짜 필터링 */}
+                  <DatePickerComponent
+                    availableDates={
+                      provider.workSchedules
+                        .filter((schedule) => !schedule.isHoliday && schedule.startTime && schedule.endTime)
+                        .map((schedule) => new Date(schedule.date))}
+                    onSelectDate={(date) => {
+                      console.log(`선택된 날짜: ${date}`);
+                      // 시간 선택 단계를 위한 추가 로직
+                    }}
+                  />
+                </div>
+                )}
 
               </div>
             ))}

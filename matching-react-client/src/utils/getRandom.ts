@@ -1,9 +1,3 @@
-export function getRandomKoreanName(): string {
-  const firstNames = ['김', '이', '박', '최', '정', '강', '조', '윤', '장', '임'];
-  const lastNames = ['민준', '서준', '도윤', '시우', '하준', '지우', '예준', '하윤', '지호', '준우'];
-  return firstNames[Math.floor(Math.random() * firstNames.length)] + lastNames[Math.floor(Math.random() * lastNames.length)];
-}
-
 export function getRandomPhoneNumber(): string {
   return `010-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`;
 }

@@ -41,12 +41,23 @@ export function GoogleMapSection({ consumer, providers, onClickProvider }: Prob)
         mapContainerStyle={{ width: '100%', height: '100%' }}
         center={{
           lat: consumer.currentCoordinates[0],
-          lng: consumer.currentCoordinates[1] - 0.015,
+          lng: consumer.currentCoordinates[1] - 0.02,
         }}
-        zoom={15}
+        zoom={14}
         options={{
           streetViewControl: false, // Street View (Pegman) 컨트롤 비활성화
+          minZoom: 14, // 최소 줌 레벨
+          maxZoom: 20, // 최대 줌 레벨
+          restriction: {
+            latLngBounds: {
+              north: consumer.currentCoordinates[0] + 0.1, // 북쪽 경계
+              south: consumer.currentCoordinates[0] - 0.1, // 남쪽 경계
+              east: consumer.currentCoordinates[1] + 0.1, // 동쪽 경계
+              west: consumer.currentCoordinates[1] - 0.1, // 서쪽 경계
+            },
+          },
         }}
+
       >
         <Polygon
           paths={jungGuAreaCoordinates}

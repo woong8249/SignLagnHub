@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-restricted-syntax */
 // src/utils/fakeApi.ts
 export abstract class FakeApi<T extends { id: number }> {
   private storageKey: string;
@@ -11,12 +15,25 @@ export abstract class FakeApi<T extends { id: number }> {
 
   getAll(): T[] {
     const data = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
-    return data as T[];
+    return data.map((item: T) => this.parseDates(item)) as T[];
   }
 
   getById(id: number): T | undefined {
     const data = this.getAll();
     return data.find((item) => item.id === id);
+  }
+
+  private parseDates(item: any): any {
+    if (typeof item === 'object' && item !== null) {
+      for (const key in item) {
+        if (typeof item[key] === 'string' && !isNaN(Date.parse(item[key]))) {
+          item[key] = new Date(item[key]); // 문자열 -> Date 변환
+        } else if (typeof item[key] === 'object') {
+          this.parseDates(item[key]); // 재귀 호출로 중첩된 객체 처리
+        }
+      }
+    }
+    return item;
   }
 
   create(newItem: Omit<T, 'id'>): T {

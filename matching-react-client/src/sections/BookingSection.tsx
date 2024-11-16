@@ -13,7 +13,7 @@ interface Prob {
 export function BookingSection({ providers, handleProvideSelection }:Prob) {
   return (
     <section className=" flex-1 bg-gray-100 overflow-y-auto  shadow-lg rounded">
-      <h2 className="text-2xl font-semibold p-4 "> 예약</h2>
+      <h2 className="text-2xl font-semibold p-4 "> 예약 신청</h2>
 
       {providers.map((provider, index) => (
         <div key={index} >

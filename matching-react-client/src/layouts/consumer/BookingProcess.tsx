@@ -11,6 +11,8 @@ import { MdOutlinePlace } from 'react-icons/md';
 import { PlaceSearchBar } from '@layouts/consumer/LocationSearchBar';
 import { AiOutlineMessage } from 'react-icons/ai';
 import { CustomAlert } from '@components/CustomAlert'; // 모달 컴포넌트 import
+import { useNavigate } from 'react-router-dom';
+import { bookingApi } from '@utils/bookingApi';
 
 interface BookingProcessProps {
   provider: Provider;
@@ -22,9 +24,10 @@ export function BookingProcess({ provider, onSelectDate, onSelectTime }: Booking
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [selectedLocation, setSelectedLocation] = useState<{ name: string; lat: number; lng: number } | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<{ name: string; lat: number; lng: number } | null>(null);
   const [message, setMessage] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate(); // navigate 사용
 
   const isAvailableDate = (date: Date) => provider.workSchedules.some((schedule) => {
     const scheduleDate = new Date(schedule.date);
@@ -119,14 +122,14 @@ export function BookingProcess({ provider, onSelectDate, onSelectTime }: Booking
 
           <PlaceSearchBar
             onSelectLocation={(location) => {
-              setSelectedLocation(location);
+              setSelectedPlace(location);
               console.log('선택된 위치:', location);
             }}
           />
         </div>
       )}
 
-      {selectedLocation && (
+      {selectedPlace && (
         <div className='mt-6'>
           <hr className="border-t-1 border-gray-300 " />
           <div className='flex items-center gap-2 px-3 py-6'>
@@ -152,7 +155,24 @@ export function BookingProcess({ provider, onSelectDate, onSelectTime }: Booking
           {isModalOpen && (
           <CustomAlert
             message="예약신청이 완료 되었습니다."
-            onClose={() => setModalOpen(false)} // 모달 닫기
+            onClose={() => {
+              setModalOpen(false);
+              bookingApi.create({
+                providerId: provider.id,
+                consumerId: 1,
+                date: selectedDate as Date,
+                time: selectedTime as string,
+                place: selectedPlace as { name: string; lat: number; lng: number },
+                isAccepted: false,
+                contents: message,
+                updatedAt: new Date(),
+                createdAt: new Date(),
+              });
+              navigate('/consumer'); // ConsumerPage로 이동
+              setTimeout(() => {
+                // 알림 만들기
+              }, 5000);
+            }} // 모달 닫기
           />
           )}
         </div>

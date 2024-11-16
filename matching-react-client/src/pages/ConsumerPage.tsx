@@ -17,6 +17,9 @@ export default function ConsumerPage() {
   }
 
   const fetchedConsumer = consumer as ConsumerWithAllInfo;
+  const {
+    profileImage, name,
+  } = fetchedConsumer;
 
   return (
     <div className="relative bg-[url('background.webp')] bg-cover bg-center min-h-screen m-auto">
@@ -38,14 +41,15 @@ export default function ConsumerPage() {
         <div className='xl:flex xl:items-center xl:justify-center'>
           <div className='w-full my-[2rem]' >
             <div className='text-gray-300 mb-2'>
-              <span className="text-2xl">{fetchedConsumer.name}</span>
+              <img src={profileImage} alt="profile" className='w-[100px] border rounded-xl mb-2 ' />
+              <span className="text-2xl">{name}</span>
               <span>{' 님'}</span>
             </div>
 
             <div>반갑습니다. 오늘도 즐거운 하루 되세요.</div>
           </div>
 
-          <ButtonGrid />
+          <ButtonGrid consumer={fetchedConsumer} />
         </div>
       </section>
     </div>

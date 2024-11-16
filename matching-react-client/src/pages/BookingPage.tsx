@@ -1,13 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { useConsumer } from '@hooks/useConsumer';
 import SideNavBar from '@layouts/common/SideNavBar';
-import ErrorPage from './ErrorPage';
-import { ConsumerWithAllInfo, ProviderWithAllInfo } from '@typings/User';
+import { ProviderWithAllInfo } from '@typings/User';
 import { GoogleMapSection } from '@sections/GoogleMapSection';
 import { userApi } from '@utils/userApi';
 import { useImmer } from 'use-immer';
 import { CenterSection } from '@sections/CenterSection';
 import { BookingSection } from '@sections/\bBookingSection';
+import { useState } from 'react';
 
 export type Provider =Omit<ProviderWithAllInfo, 'center'> &
 {
@@ -15,9 +14,8 @@ export type Provider =Omit<ProviderWithAllInfo, 'center'> &
   showBookingForm: boolean; // 예약 폼 표시 상태
 }
 export function BookingPage() {
-  const { consumer, error } = useConsumer();
-  const fetchedConsumer = consumer as ConsumerWithAllInfo;
-  const { center } = fetchedConsumer;
+  const [consumer, setConsumer] = useState(userApi.getUserWithAllInfo(1));
+  const { center } = consumer;
   const initProviders = userApi.getProvidersWithAllInfoByCenterId(center.id).map((item) => ({ ...item, selected: false, showBookingForm: false }));
   const [providers, setProviders] = useImmer<Provider[]>(initProviders);
 
@@ -30,14 +28,14 @@ export function BookingPage() {
     });
   }
 
-  if (error) {
-    return <ErrorPage></ErrorPage>;
-  }
+  setInterval(() => {
+    setConsumer(userApi.getUserWithAllInfo(1));
+  }, 1000);
 
   return (
     <div className="absolute inset-0 bg-[url('background.webp')] bg-cover bg-center z-0">
       <GoogleMapSection
-        consumer={fetchedConsumer}
+        consumer={consumer}
         providers={providers}
         onClickProvider={handleProvideSelection}
       />

@@ -7,7 +7,7 @@ export default function SideNavBar() {
   return (
     <div className="fixed z-[10] top-0 left-0 h-full w-[80px] bg-white text-black flex flex-col items-center justify-between py-5 shadow-lg">
       {/* 로고 */}
-      <Link to="/" className="mb-6 ">
+      <Link to="/consumer" className="mb-6 ">
         <div className="flex items-center text-2xl font-bold">
           <div>
             <span>S</span>

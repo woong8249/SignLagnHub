@@ -13,6 +13,7 @@ import { AiOutlineMessage } from 'react-icons/ai';
 import { CustomAlert } from '@components/CustomAlert'; // 모달 컴포넌트 import
 import { useNavigate } from 'react-router-dom';
 import { bookingApi } from '@utils/bookingApi';
+import { notificationApi } from '@utils/notificationApi';
 
 interface BookingProcessProps {
   provider: Provider;
@@ -157,7 +158,7 @@ export function BookingProcess({ provider, onSelectDate, onSelectTime }: Booking
             message="예약신청이 완료 되었습니다."
             onClose={() => {
               setModalOpen(false);
-              bookingApi.create({
+              const book = bookingApi.create({
                 providerId: provider.id,
                 consumerId: 1,
                 date: selectedDate as Date,
@@ -170,7 +171,17 @@ export function BookingProcess({ provider, onSelectDate, onSelectTime }: Booking
               });
               navigate('/consumer'); // ConsumerPage로 이동
               setTimeout(() => {
-                // 알림 만들기
+                bookingApi.update(book.id, {
+                  ...book, isAccepted: true,
+                });
+                notificationApi.create({
+                  userId: 1,
+                  notificationStatus: false,
+                  contents: `${provider.name} 통역사님께서 귀하의 예약을 확인하고 완료하셨습니다. 감사합니다.`,
+                  isRead: false,
+                  updatedAt: new Date(),
+                  createdAt: new Date(),
+                });
               }, 5000);
             }} // 모달 닫기
           />

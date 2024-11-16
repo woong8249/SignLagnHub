@@ -9,6 +9,7 @@ import { useModal } from '@hooks/useModal';
 import { CenterSection } from '@sections/CenterSection';
 import { userApi } from '@utils/userApi';
 import { useState } from 'react';
+import { IoChevronDown, IoChevronForward } from 'react-icons/io5';
 
 interface Prob {
   consumer: ConsumerWithAllInfo;
@@ -37,7 +38,7 @@ export default function ButtonGrid({ consumer }: Prob) {
         }}
       >
         <BsBuildingCheck className="w-10 h-10 mb-2 text-gray-700 hover:text-blue-500" />
-        소속기관 확인하기
+        소속센터 확인하기
       </div>
 
       {/* 소속기관 모달 */}
@@ -114,37 +115,46 @@ export default function ButtonGrid({ consumer }: Prob) {
 
                   return (
                     <div key={index} className="p-4 border rounded-lg shadow-md bg-white">
-                      <div className="flex items-center gap-4">
-                        {providerInfo?.profileImage && (
+                      <div className='flex  justify-between items-center'>
+                        <div className="flex items-center gap-4">
+                          {providerInfo?.profileImage && (
                           <img
                             src={providerInfo.profileImage}
                             alt={`${providerInfo.name} 프로필`}
                             className="w-12 h-12 rounded-full"
-                          />
-                        )}
+                        />
+                          )}
 
-                        <div>
                           <div className="text-lg font-semibold text-gray-700">{`통역사: ${providerInfo?.name || '정보 없음'}`}</div>
                         </div>
+
+                        <div className={`${booking.isAccepted ? 'text-blue-400' : ''}`}>{booking.isAccepted ? '예약 완료' : '예약 요청 중'}</div>
                       </div>
 
                       <div className="border-t border-gray-300 mt-3 pt-3">
-                        <div className="font-semibold text-gray-700">{`예약 날짜: ${new Date(booking.date).toLocaleDateString('ko-KR')}`}</div>
+                        <div className="flex items-center justify-between">
+                          <div className="font-semibold text-gray-700">
+                            {`예약 날짜: ${new Date(booking.date).toLocaleDateString('ko-KR')}`}
+                          </div>
 
-                        <button
-                          className="text-blue-500 text-sm underline"
-                          onClick={() => setExpandedBooking((prev) => (prev === index ? null : index))
-                          }
-                        >
-                          {expandedBooking === index ? '세부 정보 숨기기' : '세부 정보 보기'}
-                        </button>
+                          <button
+                            onClick={() => setExpandedBooking((prev) => (prev === index ? null : index))}
+                            className="text-gray-500 focus:outline-none"
+                            >
+                            {expandedBooking === index ? (
+                              <IoChevronDown className="w-5 h-5" />
+                            ) : (
+                              <IoChevronForward className="w-5 h-5" />
+                            )}
+                          </button>
+                        </div>
 
                         {expandedBooking === index && (
-                          <div className="mt-2 text-sm space-y-1">
-                            <div className="text-gray-600">{`시간: ${booking.time}`}</div>
-                            <div className="text-gray-600">{`목적지: ${booking.place.name}`}</div>
-                            <div className="text-gray-600">{`전달 내용: ${booking.contents || '없음'}`}</div>
-                          </div>
+                        <div className="mt-2 text-sm space-y-1">
+                          <div className="text-gray-600">{`시간: ${booking.time}`}</div>
+                          <div className="text-gray-600">{`목적지: ${booking.place.name}`}</div>
+                          <div className="text-gray-600">{`전달 내용: ${booking.contents || '없음'}`}</div>
+                        </div>
                         )}
                       </div>
                     </div>
@@ -154,6 +164,7 @@ export default function ButtonGrid({ consumer }: Prob) {
                 <div className="text-gray-500 text-center">예약된 내역이 없습니다.</div>
               )}
             </div>
+
           </div>
         </div>
       )}

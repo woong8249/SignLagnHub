@@ -14,9 +14,12 @@ interface Prob {
   consumer: ConsumerWithAllInfo;
   providers: Provider[];
   onClickProvider: (provider: Provider) => void;
+  selectedPlace: { lat: number; lng: number } | null; // Prop 추가
 }
 
-export function GoogleMapSection({ consumer, providers, onClickProvider }: Prob) {
+export function GoogleMapSection({
+  consumer, providers, onClickProvider, selectedPlace,
+}: Prob) {
   const { coordinates } = consumer.center;
   const providersCoordinates = providers.map((provider) => provider.currentCoordinates);
 
@@ -91,6 +94,17 @@ export function GoogleMapSection({ consumer, providers, onClickProvider }: Prob)
             )}
           </Marker>
         ))}
+
+        {/* Selected Place Marker */}
+        {selectedPlace && (
+          <Marker
+            position={selectedPlace}
+            icon={{
+              url: 'greenFlagMarker.png',
+              scaledSize: new window.google.maps.Size(50, 60),
+            }}
+          />
+        )}
       </GoogleMap>
     </div>
   );

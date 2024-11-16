@@ -19,9 +19,12 @@ interface BookingProcessProps {
   provider: Provider;
   onSelectDate: (date: Date) => void;
   onSelectTime: (time: string) => void;
+  onSelectPlace: (item: { name: string; lat: number; lng: number }) => void;
 }
 
-export function BookingProcess({ provider, onSelectDate, onSelectTime }: BookingProcessProps) {
+export function BookingProcess({
+  provider, onSelectDate, onSelectTime, onSelectPlace,
+}: BookingProcessProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -124,6 +127,7 @@ export function BookingProcess({ provider, onSelectDate, onSelectTime }: Booking
           <PlaceSearchBar
             onSelectLocation={(location) => {
               setSelectedPlace(location);
+              onSelectPlace(location);
               console.log('선택된 위치:', location);
             }}
           />

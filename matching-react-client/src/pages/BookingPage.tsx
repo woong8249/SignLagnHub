@@ -18,6 +18,7 @@ export function BookingPage() {
   const { center } = consumer;
   const initProviders = userApi.getProvidersWithAllInfoByCenterId(center.id).map((item) => ({ ...item, selected: false, showBookingForm: false }));
   const [providers, setProviders] = useImmer<Provider[]>(initProviders);
+  const [selectedPlace, setSelectedPlace] = useState<{ lat: number; lng: number } | null>(null);
 
   function handleProvideSelection(provider:Provider) {
     setProviders((draft) => {
@@ -38,6 +39,7 @@ export function BookingPage() {
         consumer={consumer}
         providers={providers}
         onClickProvider={handleProvideSelection}
+        selectedPlace={selectedPlace} // 전달
       />
 
       <div className="relative z-[10] flex w-[55%] min-w-[850px] h-screen max-h-screen">
@@ -45,7 +47,12 @@ export function BookingPage() {
 
         <div className="relative flex gap-4 p-6 pl-[100px] w-full">
           <CenterSection center={center} />
-          <BookingSection providers={providers} handleProvideSelection={handleProvideSelection} />
+
+          <BookingSection
+            providers={providers}
+            handleProvideSelection={handleProvideSelection}
+            onPlaceSelect={setSelectedPlace} // 전달받을 함수 prop 추가
+           />
         </div>
       </div>
 

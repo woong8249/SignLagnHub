@@ -8,9 +8,10 @@ import { FaPhoneAlt } from 'react-icons/fa';
 interface Prob {
     providers:Provider[]
     handleProvideSelection:(provider:Provider)=>void
+    onPlaceSelect: (place: { lat: number; lng: number }) => void; // Prop 추가
 }
 
-export function BookingSection({ providers, handleProvideSelection }:Prob) {
+export function BookingSection({ providers, handleProvideSelection, onPlaceSelect }:Prob) {
   return (
     <section className=" flex-1 bg-gray-100 overflow-y-auto  shadow-lg rounded">
       <h2 className="text-2xl font-semibold p-4 "> 예약 신청</h2>
@@ -56,6 +57,7 @@ export function BookingSection({ providers, handleProvideSelection }:Prob) {
                 onSelectTime={(time) => {
                   console.log(`선택된 시간: ${time}`);
                 }}
+                onSelectPlace={(place) => onPlaceSelect(place)} // 장소 선택 시 전달
               />
           )}
         </div>

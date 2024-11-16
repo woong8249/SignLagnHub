@@ -6,16 +6,17 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
 import { Provider } from '@pages/BookingPage';
 import { calculateAvailableTimes } from '@utils/timeUtils'; // 방금 정의한 함수 import
-import { IoTimeOutline } from 'react-icons/io5';
+import { IoCalendarOutline, IoTimeOutline } from 'react-icons/io5';
 import { PlaceSearchBar } from './LocationSearchBar';
 import { MdOutlinePlace } from 'react-icons/md';
+
 interface DatePickerComponentProps {
   provider: Provider;
   onSelectDate: (date: Date) => void;
   onSelectTime: (time: string) => void; // 시간 선택 핸들러 추가
 }
 
-export function DateAndTimePicker({ provider, onSelectDate, onSelectTime }: DatePickerComponentProps) {
+export function BookingProcess({ provider, onSelectDate, onSelectTime }: DatePickerComponentProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -37,41 +38,48 @@ export function DateAndTimePicker({ provider, onSelectDate, onSelectTime }: Date
   }
 
   return (
-    <div className="mt-2 w-full">
+    <div className="p-4">
+      <hr />
+
+      <div className='flex items-center gap-2 p-3'>
+        <IoCalendarOutline className='w-6 h-6' />
+        <div className='text-lg font-bold'> 날짜를 선택해 주세요.</div>
+      </div>
+
       <DatePicker
-        selected={selectedDate}
-        onChange={handleDateChange}
-        filterDate={(date) => availableDates.some(
-          (availableDate) => availableDate.toDateString() === date.toDateString(),
-        )}
-        inline
-        locale={ko}
-        dateFormat="yyyy년 MM월 dd일"
-        calendarClassName="custom-calendar"
-        renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
-          <div className="flex justify-center items-center gap-3 px-2 py-1">
-            <button
+          selected={selectedDate}
+          onChange={handleDateChange}
+          filterDate={(date) => availableDates.some(
+            (availableDate) => availableDate.toDateString() === date.toDateString(),
+          )}
+          inline
+          locale={ko}
+          dateFormat="yyyy년 MM월 dd일"
+          calendarClassName="custom-calendar"
+          renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
+            <div className="flex justify-center items-center gap-3 px-2 py-1">
+              <button
               onClick={decreaseMonth}
               className="focus:outline-none font-bold text-lg text-gray-500 hover:text-gray-900"
             >
-              &lt;
-            </button>
-            <span className="font-medium text-gray-700 text-lg">
-              {`${date.getFullYear()}년 ${date.getMonth() + 1}월`}
-            </span>
-            <button
+                &lt;
+              </button>
+              <span className="font-medium text-gray-700 text-lg">
+                {`${date.getFullYear()}년 ${date.getMonth() + 1}월`}
+              </span>
+              <button
               onClick={increaseMonth}
               className="focus:outline-none font-bold text-lg text-gray-500 hover:text-gray-900"
             >
-              &gt;
-            </button>
-          </div>
-        )}
-      />
+                &gt;
+              </button>
+            </div>
+          )}
+        />
 
       {/* 시간 선택 UI */}
       {availableTimes.length > 0 && (
-        <div className="my-6">
+        <div>
           <hr />
           <div className='flex items-center gap-2 px-3 py-6'>
             <IoTimeOutline className='w-6 h-6' />
@@ -92,21 +100,22 @@ export function DateAndTimePicker({ provider, onSelectDate, onSelectTime }: Date
       )}
 
       {selectedTime && (
-      <div className="my-6">
-        <hr />
-        <div className='flex items-center gap-2 px-3 py-6'>
-          <MdOutlinePlace className='w-6 h-6' />
-          <div className='text-lg font-bold'> 장소를 입력해 주세요.</div>
-        </div>
+        <div>
+          <hr />
+          <div className='flex items-center gap-2 px-3 py-6'>
+            <MdOutlinePlace className='w-6 h-6' />
+            <div className='text-lg font-bold'> 장소를 입력해 주세요.</div>
+          </div>
 
-        <PlaceSearchBar
-          onSelectLocation={(location) => {
-            console.log('선택된 위치:', location);
-          }}
+          <PlaceSearchBar
+            onSelectLocation={(location) => {
+              console.log('선택된 위치:', location);
+            }}
         />
-
-      </div>
+        </div>
       )}
+
     </div>
+
   );
 }

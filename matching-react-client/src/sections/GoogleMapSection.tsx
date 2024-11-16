@@ -1,13 +1,10 @@
 /* eslint-disable no-unused-vars */
 
 import {
-  GoogleMap, Marker, Polygon, useLoadScript, InfoWindow,
+  GoogleMap, Marker, Polygon, InfoWindow,
 } from '@react-google-maps/api';
 import { ConsumerWithAllInfo } from '@typings/User';
 import jungGuGeoJsonData from '@public/coordinates/seoul-JungGu-EPSG-4326.json';
-import config from '@config/config';
-import LoadingSpinner from '@components/LoadingSpinner';
-import ErrorPage from '@pages/ErrorPage';
 import { markerUrl } from '@constants/marker';
 import { Provider } from '@pages/BookingPage';
 
@@ -20,18 +17,6 @@ interface Prob {
 }
 
 export function GoogleMapSection({ consumer, providers, onClickProvider }: Prob) {
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: config.googleKey,
-  });
-
-  if (!isLoaded) {
-    return <LoadingSpinner />;
-  }
-
-  if (loadError) {
-    return <ErrorPage />;
-  }
-
   const { coordinates } = consumer.center;
   const providersCoordinates = providers.map((provider) => provider.currentCoordinates);
 

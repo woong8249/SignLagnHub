@@ -7,7 +7,8 @@ import { ko } from 'date-fns/locale';
 import { Provider } from '@pages/BookingPage';
 import { calculateAvailableTimes } from '@utils/timeUtils'; // 방금 정의한 함수 import
 import { IoTimeOutline } from 'react-icons/io5';
-
+import { PlaceSearchBar } from './LocationSearchBar';
+import { MdOutlinePlace } from 'react-icons/md';
 interface DatePickerComponentProps {
   provider: Provider;
   onSelectDate: (date: Date) => void;
@@ -75,7 +76,6 @@ export function DateAndTimePicker({ provider, onSelectDate, onSelectTime }: Date
           <div className='flex items-center gap-2 px-3 py-6'>
             <IoTimeOutline className='w-6 h-6' />
             <div className='text-lg font-bold'> 시간을 선택해 주세요.</div>
-
           </div>
           <div className="grid grid-cols-4 gap-2">
             {availableTimes.map((time, index) => (
@@ -89,6 +89,23 @@ export function DateAndTimePicker({ provider, onSelectDate, onSelectTime }: Date
             ))}
           </div>
         </div>
+      )}
+
+      {selectedTime && (
+      <div className="my-6">
+        <hr />
+        <div className='flex items-center gap-2 px-3 py-6'>
+          <MdOutlinePlace className='w-6 h-6' />
+          <div className='text-lg font-bold'> 장소를 입력해 주세요.</div>
+        </div>
+
+        <PlaceSearchBar
+          onSelectLocation={(location) => {
+            console.log('선택된 위치:', location);
+          }}
+        />
+
+      </div>
       )}
     </div>
   );

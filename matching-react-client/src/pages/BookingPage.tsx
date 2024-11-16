@@ -16,7 +16,6 @@ export type Provider =Omit<ProviderWithAllInfo, 'center'> &
   selected: boolean
   showBookingForm: boolean; // 예약 폼 표시 상태
 }
-
 export function BookingPage() {
   const { consumer, error } = useConsumer();
   const fetchedConsumer = consumer as ConsumerWithAllInfo;

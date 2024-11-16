@@ -3,8 +3,8 @@ export type Booking = {
     providerId: number; // 제공자 ID
     consumerId: number; // 소비자 ID
     date: string; // 예약 날짜
-    startTime: string; // 시작 시간
-    endTime: string; // 종료 시간
+    startTime: Date; // 시작 시간
+    endTime: Date; // 종료 시간
     destination: string; // 목적지
     contents: string; // 예약 내용
     isAccepted: boolean; // 수락 여부

@@ -11,12 +11,12 @@ export function CustomAlert({ message, onConfirm, onCancel }: CustomAlertProps) 
         <p className="text-lg font-medium text-gray-800">{message}</p>
 
         <div className="mt-6 flex gap-4">
-          {/* 신청 버튼 */}
+          {/* 확인 버튼 */}
           <button
             onClick={onConfirm}
             className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
           >
-            신청
+            확인
           </button>
 
           {/* 취소 버튼 */}

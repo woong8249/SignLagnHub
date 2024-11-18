@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { Booking, BookingState } from '@typings/Booking';
 import { IoChevronDown, IoChevronForward } from 'react-icons/io5';
 import { userApi } from '@utils/userApi';
+import { bookingApi } from '@utils/bookingApi';
+import { CustomAlert } from '@components/CustomAlert';
+import { notificationApi } from '@utils/notificationApi';
+import { ConsumerWithAllInfo } from '@typings/User';
 
 type BookingFilter = 'all' | 'requested' | 'accepted' | 'service_end';
 
@@ -33,6 +37,7 @@ function getBookingStateLabel(state: BookingState): string {
 export function BookingListSection({ bookings }: BookingSectionProps) {
   const [filter, setFilter] = useState<BookingFilter>('all');
   const [expandedBooking, setExpandedBooking] = useState<number | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const filteredBookings = bookings
     .filter((booking) => {
@@ -43,6 +48,29 @@ export function BookingListSection({ bookings }: BookingSectionProps) {
       return false;
     })
     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+
+  function handleOnConfirmed(booking:Booking) {
+    bookingApi.update(booking.id, { state: 'accepted' });
+
+    const provider = userApi.getById(booking.providerId) as ConsumerWithAllInfo;
+    const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(booking.date as Date);
+
+    const formattedDateTime = `${formattedDate} ${booking.time}`;
+
+    notificationApi.create({
+      targetUserId: booking.consumerId,
+      contents: `${provider.name}님이 ${formattedDateTime}에 신청하신 예약을 확정하였습니다.`,
+      state: 'new',
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    });
+    setModalOpen(false);
+    alert('예약이 확정되었습니다');
+  }
 
   return (
     <section className="bg-gray-100 w-full rounded-3xl p-4 xl:w-[35%] flex flex-col">
@@ -72,26 +100,26 @@ export function BookingListSection({ bookings }: BookingSectionProps) {
       <div className="overflow-y-auto max-h-[full] p-2 space-y-2">
         {filteredBookings.length > 0 ? (
           filteredBookings.map((booking) => {
-            const providerInfo = userApi.getById(booking.providerId);
+            const consumerInfo = userApi.getById(booking.consumerId);
 
             return (
               <div
-          key={booking.id}
-          className="p-4 border rounded-lg shadow-md bg-white flex flex-col"
-        >
+                key={booking.id}
+                className="p-4 border rounded-lg shadow-md bg-white flex flex-col"
+                >
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-4">
-                    {providerInfo?.profileImage && (
+                    {consumerInfo?.profileImage && (
                     <img
-                  src={providerInfo.profileImage}
-                  alt={`${providerInfo.name} 프로필`}
+                  src={consumerInfo.profileImage}
+                  alt={`${consumerInfo.name} 프로필`}
                   className="w-12 h-12 rounded-full"
                 />
                     )}
 
                     <div>
                       <div className="text-lg font-semibold text-gray-700">
-                        {`통역사: ${providerInfo?.name || '정보 없음'}`}
+                        {`${consumerInfo?.name || '정보 없음'}`}
                       </div>
 
                       {/* 예약 날짜 및 시간 */}
@@ -109,9 +137,9 @@ export function BookingListSection({ bookings }: BookingSectionProps) {
                   </div>
 
                   <button
-              onClick={() => setExpandedBooking((prev) => (prev === booking.id ? null : booking.id))}
-              className="text-gray-500 focus:outline-none"
-            >
+                    onClick={() => setExpandedBooking((prev) => (prev === booking.id ? null : booking.id))}
+                    className="text-gray-500 focus:outline-none"
+                    >
                     {expandedBooking === booking.id ? (
                       <IoChevronDown className="w-5 h-5" />
                     ) : (
@@ -120,14 +148,13 @@ export function BookingListSection({ bookings }: BookingSectionProps) {
                   </button>
                 </div>
 
-                {/* 부가 정보 (모달 확장) */}
                 {expandedBooking === booking.id && (
                 <div className="mt-4 text-sm text-gray-600 space-y-2">
                   <hr />
 
                   <div>
                     <span className="font-semibold text-gray-800">{'연락처 : '}</span>
-                    {providerInfo?.phoneNumber}
+                    {consumerInfo?.phoneNumber}
                   </div>
 
                   <div>
@@ -140,15 +167,38 @@ export function BookingListSection({ bookings }: BookingSectionProps) {
                     {booking.contents || '없음'}
                   </div>
 
-                </div>
+                  {/* 예약 신청 상태에서만 예약 확정 버튼 표시 */}
+                  {booking.state === 'requested' && (
+                  <div className="mt-4">
+                    <button
+                      onClick={() => setModalOpen(true)}
+                      className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    >
+                      예약 확정
+                    </button>
+                  </div>
+                  )}
 
+                  {/* 모달 */}
+                  {isModalOpen && (
+                  <CustomAlert
+                    message="해당 예약을 확정하시겠습니까?"
+                    onConfirm={() => { handleOnConfirmed(booking); }}
+                    onCancel={() => {
+                      setModalOpen(false);
+                    }}
+                  />
+                  )}
+                </div>
                 )}
+
               </div>
             );
           })
         ) : (
           <div className="text-gray-500 text-center">해당 상태의 예약이 없습니다.</div>
         )}
+
       </div>
 
     </section>

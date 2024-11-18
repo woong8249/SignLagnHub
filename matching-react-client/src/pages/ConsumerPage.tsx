@@ -56,7 +56,7 @@ export default function ConsumerPage() {
         <div className='xl:flex xl:items-center xl:justify-center'>
           <div className='w-full my-[2rem]' >
             <div className='text-gray-300 mb-2'>
-              <img src={profileImage} alt="profile" className='w-[100px] border rounded-xl mb-2 ' />
+              <img src={profileImage} alt="profile" className='w-[100px]  border rounded-xl mb-2 ' />
               <span className="text-2xl">{name}</span>
               <span>{' 님'}</span>
             </div>

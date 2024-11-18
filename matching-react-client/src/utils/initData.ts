@@ -94,7 +94,7 @@ export function initData() {
       gender: 'M',
       birthDate: new Date('1994-10-03'),
       address: '서울시 중구',
-      profileImage: 'https://picsum.photos/200/200',
+      profileImage: 'che-profile.jpg',
       serviceOn: false,
       centerId: 1,
       currentCoordinates: 시연장소Coordinates,

@@ -14,7 +14,7 @@ export type Provider =Omit<ProviderWithAllInfo, 'center'> &
   showBookingForm: boolean; // 예약 폼 표시 상태
 }
 export function BookingPage() {
-  const [consumer, setConsumer] = useState(userApi.getUserWithAllInfo(1));
+  const consumer = userApi.getUserWithAllInfo(1);
   const { center } = consumer;
   const initProviders = userApi.getProvidersWithAllInfoByCenterId(center.id).map((item) => ({ ...item, selected: false, showBookingForm: false }));
   const [providers, setProviders] = useImmer<Provider[]>(initProviders);
@@ -28,10 +28,6 @@ export function BookingPage() {
       });
     });
   }
-
-  setInterval(() => {
-    setConsumer(userApi.getUserWithAllInfo(1));
-  }, 1000);
 
   return (
     <div className="absolute inset-0 bg-[url('background.webp')] bg-cover bg-center z-0">

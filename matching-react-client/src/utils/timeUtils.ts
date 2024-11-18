@@ -24,10 +24,10 @@ export function calculateAvailableTimes(
     allTimes.push(`${hour}:00`);
   }
 
-  // 예약된 시간 제외
+  // 예약된 시간 제외 => 수정해야함
   const bookedTimes = provider.bookings
     .filter((booking) => new Date(booking.date).toDateString() === selectedDate.toDateString())
-    .map((booking) => `${new Date(booking.startTime).getHours()}:00`);
+    .map((booking) => `${new Date(booking.time).getHours()}:00`);
 
   const availableTimes = allTimes.filter((time) => !bookedTimes.includes(time));
 

@@ -9,6 +9,8 @@ export function Logo() {
           <span className="text-red-500">.</span>
           <div className="font-bold">Booking</div>
         </div>
+
+        <div className='text-sm text-gray-300'>통역사 예약 서비스</div>
       </div>
     </Link>
   );

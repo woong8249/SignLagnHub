@@ -122,17 +122,26 @@ export function ConsumerPageBookingSection({ bookings }: BookingSectionProps) {
 
                 {/* 부가 정보 (모달 확장) */}
                 {expandedBooking === booking.id && (
-                <div className="mt-4 text-sm text-gray-600">
+                <div className="mt-4 text-sm text-gray-600 space-y-2">
+                  <hr />
+
                   <div>
-                    <span className="font-semibold text-gray-800">{'장소: '}</span>
+                    <span className="font-semibold text-gray-800">{'연락처 : '}</span>
+                    {providerInfo?.phoneNumber}
+                  </div>
+
+                  <div>
+                    <span className="font-semibold text-gray-800">{'장소 : '}</span>
                     {booking.place.name}
                   </div>
 
                   <div>
-                    <span className="font-semibold text-gray-800">{'전달 내용: '}</span>
+                    <span className="font-semibold text-gray-800">{'전달 내용 : '}</span>
                     {booking.contents || '없음'}
                   </div>
+
                 </div>
+
                 )}
               </div>
             );

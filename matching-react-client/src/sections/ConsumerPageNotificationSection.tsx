@@ -32,20 +32,22 @@ export function ConsumerPageNotificationSection({
       <hr />
 
       {/* 필터 버튼 */}
-      <div className="flex justify-start gap-2 my-4">
-        {['all', 'notRead', 'read'].map((type) => (
-          <button
+      <div className='flex justify-center my-4'>
+        <div className="flex justify-start gap-2 my-4">
+          {['all', 'notRead', 'read'].map((type) => (
+            <button
             key={type}
             onClick={() => setFilter(type as NotificationFilter)}
             className={`px-3 py-2 text-sm rounded-md ${
               filter === type ? 'bg-blue-400 text-white' : 'bg-gray-200 text-gray-700'
             }`}
           >
-            {type === 'all' && '전체'}
-            {type === 'notRead' && '읽지 않음'}
-            {type === 'read' && '읽음'}
-          </button>
-        ))}
+              {type === 'all' && '전체'}
+              {type === 'notRead' && '읽지 않음'}
+              {type === 'read' && '읽음'}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* 알림 리스트 */}

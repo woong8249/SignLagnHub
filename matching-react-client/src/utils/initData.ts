@@ -37,14 +37,16 @@ function generateWorkSchedulesForTwoWeeks(startDate: Date, providerId: number): 
       const isHoliday = providerId === 2 && isFriday; // 특정 조건: 금요일 휴무
       const now = new Date(); // 현재 시간
 
+      const startTime = new Date(currentDate.setHours(9, 0, 0, 0));
+      const endTime = new Date(currentDate.setHours(18, 0, 0, 0));
+
       let state: WorkScheduleState = 'beforeWork';
+      let actualStartTime: Date | undefined;
+      let actualEndTime: Date | undefined;
 
       if (isHoliday) {
         state = 'holiday';
       } else {
-        const startTime = new Date(currentDate.setHours(9, 0, 0, 0));
-        const endTime = new Date(currentDate.setHours(18, 0, 0, 0));
-
         if (now >= startTime && now < endTime) {
           state = 'working'; // 근무 중
         } else if (now >= endTime) {
@@ -52,16 +54,22 @@ function generateWorkSchedulesForTwoWeeks(startDate: Date, providerId: number): 
         } else {
           state = 'beforeWork'; // 출근 전
         }
+
+        // 지난 날짜에 대해 실제 출퇴근 시간을 자동 설정
+        if (currentDate < now) {
+          actualStartTime = new Date(currentDate.setHours(9, 0, 0, 0));
+          actualEndTime = new Date(currentDate.setHours(18, 0, 0, 0));
+        }
       }
 
       schedules.push({
         providerId,
         state,
         date: new Date(currentDate),
-        startTime: isHoliday ? undefined : new Date(currentDate.setHours(9, 0, 0, 0)),
-        endTime: isHoliday ? undefined : new Date(currentDate.setHours(18, 0, 0, 0)),
-        actualStartTime: undefined,
-        actualEndTime: undefined,
+        startTime: isHoliday ? undefined : new Date(startTime),
+        endTime: isHoliday ? undefined : new Date(endTime),
+        actualStartTime,
+        actualEndTime,
         createdAt: new Date(),
         updatedAt: new Date(),
       });

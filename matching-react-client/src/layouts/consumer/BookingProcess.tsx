@@ -59,33 +59,6 @@ export function BookingProcess({
 
   function handleBooking() {
     setModalOpen(true);
-    bookingApi.create({
-      providerId: provider.id,
-      consumerId: consumer.id,
-      date: selectedDate as Date,
-      time: selectedTime as string,
-      place: selectedPlace as { name: string; lat: number; lng: number },
-      contents: message,
-      updatedAt: new Date(),
-      createdAt: new Date(),
-      state: 'requested',
-    });
-    const formattedDate = new Intl.DateTimeFormat('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }).format(selectedDate as Date);
-
-    const formattedDateTime = `${formattedDate} ${selectedTime}`;
-
-    notificationApi.create({
-      targetUserId: provider.id,
-      contents: `새로운 예약 신청이 있습니다. ${consumer.name}님이 ${formattedDateTime}에 예약을 신청하셨습니다.`,
-      state: 'new',
-      updatedAt: new Date(),
-      createdAt: new Date(),
-    });
-    navigate('/consumer'); // ConsumerPage로 이동
   }
 
   return (
@@ -181,7 +154,7 @@ export function BookingProcess({
           />
 
           <button
-          className='mt-6 w-full p-2 flex justify-center border rounded-full bg-green-300 hover:bg-green-500'
+          className='mt-6 w-full p-2 flex justify-center border text-white rounded-full bg-blue-500 hover:bg-blue-600'
           onClick={handleBooking} // 모달 열기
           >
             신청하기
@@ -190,10 +163,39 @@ export function BookingProcess({
           {/* 모달 */}
           {isModalOpen && (
           <CustomAlert
-            message="예약신청이 완료 되었습니다."
-            onClose={() => {
-              setModalOpen(false);
+            message="예약신청을 하시겠습니까?"
+            onConfirm={() => {
+              bookingApi.create({
+                providerId: provider.id,
+                consumerId: consumer.id,
+                date: selectedDate as Date,
+                time: selectedTime as string,
+                place: selectedPlace as { name: string; lat: number; lng: number },
+                contents: message,
+                updatedAt: new Date(),
+                createdAt: new Date(),
+                state: 'requested',
+              });
+              const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }).format(selectedDate as Date);
+
+              const formattedDateTime = `${formattedDate} ${selectedTime}`;
+
+              notificationApi.create({
+                targetUserId: provider.id,
+                contents: `새로운 예약 신청이 있습니다. ${consumer.name}님이 ${formattedDateTime}에 예약을 신청하셨습니다.`,
+                state: 'new',
+                updatedAt: new Date(),
+                createdAt: new Date(),
+              });
+              alert('신청이 완료되었습니다');
               navigate('/consumer'); // ConsumerPage로 이동
+            }}
+            onCancel={() => {
+              setModalOpen(false);
             }} // 모달 닫기
           />
           )}

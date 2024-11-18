@@ -9,7 +9,7 @@ export class NotificationApi extends FakeApi<Notification> {
   // 특정 사용자의 모든 알림 반환
   getAllNotificationByUserID(userId: number): Notification[] {
     const notifications = this.getAll();
-    return notifications.filter((notification) => notification.userId === userId);
+    return notifications.filter((notification) => notification.targetUserId === userId);
   }
 }
 

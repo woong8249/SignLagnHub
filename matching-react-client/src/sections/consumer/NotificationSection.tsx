@@ -8,7 +8,7 @@ interface NotificationSectionProps {
   notifications: Notification[];
 }
 
-export function ConsumerPageNotificationSection({
+export function NotificationSection({
   notifications,
 }: NotificationSectionProps) {
   const [filter, setFilter] = useState<NotificationFilter>('all');

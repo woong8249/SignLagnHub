@@ -2,11 +2,11 @@ import TopNavBar from '@layouts/common/TopNavBar';
 
 import { useEffect } from 'react';
 import { userApi } from '@utils/userApi';
-import { CenterSection } from '@sections/CenterSection';
-import { ConsumerPageBookingSection } from '@sections/ConsumerPageBookingSection';
+import { CenterSection } from '@sections/common/CenterSection';
+import { BookingListSection } from '@sections/consumer/BookingListSection';
 import { Link } from 'react-router-dom';
 import { useModal } from '@hooks/useModal';
-import { ConsumerPageNotificationSection } from '@sections/ConsumerPageNotificationSection';
+import { NotificationSection } from '@sections/consumer/NotificationSection';
 
 import { useImmer } from 'use-immer';
 import { notificationApi } from '@utils/notificationApi';
@@ -67,7 +67,7 @@ export default function ConsumerPage() {
           </div>
 
           {/* 알림 */}
-          <ConsumerPageNotificationSection notifications={notifications} />
+          <NotificationSection notifications={notifications} />
         </section>
 
         {/* 소속 센터 */}
@@ -81,7 +81,7 @@ export default function ConsumerPage() {
         </section>
 
         {/* 예약 목록 */}
-        <ConsumerPageBookingSection bookings={bookings} />
+        <BookingListSection bookings={bookings} />
 
         {/* 알림 모달 */}
         {newNotifications.length > 0 && (

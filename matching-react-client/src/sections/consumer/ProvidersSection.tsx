@@ -11,7 +11,7 @@ interface Prob {
     onPlaceSelect: (place: { lat: number; lng: number }) => void; // Prop 추가
 }
 
-export function BookingSection({ providers, handleProvideSelection, onPlaceSelect }:Prob) {
+export function ProvidersSection({ providers, handleProvideSelection, onPlaceSelect }:Prob) {
   return (
     <section className=" flex-1 bg-gray-100 overflow-y-auto  shadow-lg rounded">
       <h2 className="text-2xl font-semibold p-4 "> 예약 신청</h2>

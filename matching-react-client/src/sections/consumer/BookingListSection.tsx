@@ -30,7 +30,7 @@ function getBookingStateLabel(state: BookingState): string {
   }
 }
 
-export function ConsumerPageBookingSection({ bookings }: BookingSectionProps) {
+export function BookingListSection({ bookings }: BookingSectionProps) {
   const [filter, setFilter] = useState<BookingFilter>('all');
   const [expandedBooking, setExpandedBooking] = useState<number | null>(null);
 

@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
-import SideNavBar from '@layouts/common/SideNavBar';
+import SideNavBar from '@layouts/consumer/SideNavBar';
 import { ProviderWithAllInfo } from '@typings/User';
-import { GoogleMapSection } from '@sections/GoogleMapSection';
+import { GoogleMapSection } from '@sections/consumer/GoogleMapSection';
 import { userApi } from '@utils/userApi';
 import { useImmer } from 'use-immer';
-import { CenterSection } from '@sections/CenterSection';
-import { BookingSection } from '@sections/\bBookingSection';
+import { CenterSection } from '@sections/common/CenterSection';
+import { ProvidersSection } from '@sections/consumer/ProvidersSection';
 import { useState } from 'react';
 
 export type Provider =Omit<ProviderWithAllInfo, 'center'> &
@@ -44,7 +44,7 @@ export function BookingPage() {
         <div className="relative flex gap-4 p-6 pl-[100px] w-full">
           <CenterSection center={center} />
 
-          <BookingSection
+          <ProvidersSection
             providers={providers}
             handleProvideSelection={handleProvideSelection}
             onPlaceSelect={setSelectedPlace} // 전달받을 함수 prop 추가

@@ -1,7 +1,6 @@
 import { Logo } from '@components/Logo';
 import { useEffect, useState } from 'react';
 import { HiBars3 } from 'react-icons/hi2';
-import { IoIosNotificationsOutline } from 'react-icons/io';
 import { IoPersonSharp } from 'react-icons/io5';
 
 export default function TopNavBar() {
@@ -26,7 +25,6 @@ export default function TopNavBar() {
 
       <div className={`flex items-center gap-4 ${isScrolled ? 'text-black' : ' text-gray-300'}`}>
         <IoPersonSharp className="cursor-pointer w-7 h-7" />
-        <IoIosNotificationsOutline className="cursor-pointer w-8 h-8" />
         <HiBars3 className="cursor-pointer w-8 h-8" />
       </div>
     </div>

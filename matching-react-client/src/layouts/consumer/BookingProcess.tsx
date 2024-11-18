@@ -33,13 +33,15 @@ export function BookingProcess({
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate(); // navigate 사용
 
-  const isAvailableDate = (date: Date) => provider.workSchedules.some((schedule) => {
-    const scheduleDate = new Date(schedule.date);
-    return (
-      scheduleDate.toLocaleDateString() === date.toLocaleDateString()
-        && !schedule.isHoliday // 휴일이 아닌 날짜만 허용
-    );
-  });
+  function isAvailableDate(date:Date) {
+    return provider.workSchedules.some((schedule) => {
+      const scheduleDate = new Date(schedule.date);
+      return (
+        scheduleDate.toLocaleDateString() === date.toLocaleDateString()
+          && !schedule.isHoliday // 휴일이 아닌 날짜만 허용
+      );
+    });
+  }
 
   function handleDateChange(date: Date | null) {
     if (date) {
@@ -168,24 +170,29 @@ export function BookingProcess({
                 date: selectedDate as Date,
                 time: selectedTime as string,
                 place: selectedPlace as { name: string; lat: number; lng: number },
-                isAccepted: false,
                 contents: message,
                 updatedAt: new Date(),
                 createdAt: new Date(),
+                state: 'requested',
               });
               navigate('/consumer'); // ConsumerPage로 이동
               setTimeout(() => {
-                bookingApi.update(book.id, {
-                  ...book, isAccepted: true,
-                });
+                const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                }).format(book.createdAt);
                 notificationApi.create({
                   userId: 1,
-                  notificationStatus: false,
-                  contents: `${provider.name} 통역사님께서 귀하의 예약을 확인하고 완료하셨습니다. 감사합니다.`,
-                  isRead: false,
+                  contents: `${formattedDate} 에 ${provider.name}님 에게 신청한 예약이 확정되었습니다.`,
+                  state: 'new',
                   updatedAt: new Date(),
                   createdAt: new Date(),
                 });
+
+                bookingApi.update(book.id, { state: 'accepted' });
               }, 5000);
             }} // 모달 닫기
           />

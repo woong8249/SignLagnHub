@@ -1,39 +1,33 @@
 import TopNavBar from '@layouts/common/TopNavBar';
-import ButtonGrid from '@layouts/consumer/ButtonGrid';
-import { useEffect, useState } from 'react';
+
+import { useEffect } from 'react';
 import { userApi } from '@utils/userApi';
-import { Notification } from '@typings/Notification';
-import { useImmer } from 'use-immer';
+import { CenterSection } from '@sections/CenterSection';
+import { ConsumerPageBookingSection } from '@sections/ConsumerPageBookingSection';
+import { Link } from 'react-router-dom';
 import { useModal } from '@hooks/useModal';
+import { ConsumerPageNotificationSection } from '@sections/ConsumerPageNotificationSection';
+
+import { useImmer } from 'use-immer';
 import { notificationApi } from '@utils/notificationApi';
 
 export default function ConsumerPage() {
-  const [consumer, setConsumer] = useState(userApi.getUserWithAllInfo(1));
-  const { isModalOpen, setIsModalOpen, modalRef } = useModal();
-  const [newNotifications, setNewNotifications] = useImmer<Notification[]>([]);
+  const { setIsModalOpen, modalRef } = useModal();
+  const [consumer, setConsumer] = useImmer(userApi.getUserWithAllInfo(1));
+  const {
+    center,
+    bookings,
+    profileImage,
+    name,
+    notifications,
+  } = consumer;
 
-  const { profileImage, name } = consumer;
+  const newNotifications = notifications.filter((item) => item.state === 'new');
 
   useEffect(() => {
-    window.history.replaceState(null, '', '/');
-  }, []);
-
-  useEffect(() => {
-    // notification 폴링
+    // notification, Booking list 를 위한 폴링
     const interval = setInterval(() => {
       const newConsumerInfo = userApi.getUserWithAllInfo(1);
-      const { notifications } = newConsumerInfo;
-
-      const newNotis = notifications.filter((item) => !item.notificationStatus); // 알림이 한 번도 표시되지 않은 것
-      if (newNotis.length > 0) {
-        setNewNotifications(newNotis);
-        setIsModalOpen(true);
-        newNotis.forEach((noti) => {
-          notificationApi.update(noti.id, {
-            ...noti, notificationStatus: true,
-          });
-        });
-      }
       setConsumer(newConsumerInfo);
     }, 1000);
 
@@ -46,30 +40,51 @@ export default function ConsumerPage() {
       <div className="absolute inset-0 bg-black opacity-50 z-0" />
       <TopNavBar />
 
-      <section
-        className={`
-          sm:flex sm:flex-col sm:justify-center 
-          relative z-5 pt-[6rem] w-[90vw] h-[90vh] px-10 m-auto
-          text-white`}>
-        <h1 className='responsive-h1 font-bold mb-2'>SignLangHub 통역사 예약 서비스</h1>
+      <div
+      className={`relative z-5  w-[95%] h-[100%] flex flex-col gap-10 m-auto
+        sm:w-[80%]
+        xl:flex-row xl:w-[90%] xl:justify-center  py-[6rem]` }>
 
-        <div className='xl:flex xl:items-center xl:justify-center'>
-          <div className='w-full my-[2rem]' >
-            <div className='text-gray-300 mb-2'>
+        <section className='xl:w-[30%]' >
+          {/* 개인정보 */}
+          <div>
+            <div className='text-gray-100 mb-2 '>
               <img src={profileImage} alt="profile" className='w-[100px]  border rounded-xl mb-2 ' />
               <span className="text-2xl">{name}</span>
               <span>{' 님'}</span>
             </div>
 
-            <div>반갑습니다. 오늘도 즐거운 하루 되세요.</div>
+            <div className='text-white' >반갑습니다. 오늘도 즐거운 하루 되세요.</div>
           </div>
 
-          <ButtonGrid consumer={consumer} />
-        </div>
-      </section>
+          {/* 예약하기 */}
+          <div className="my-4 mb-10 ">
+            <Link to={'/booking'}>
+              <button className="w-full px-6 py-4 bg-gray-400 text-white text-xl font-bold rounded-lg shadow-md hover:bg-gray-600 focus:outline-none">
+                예약하기
+              </button>
+            </Link>
+          </div>
 
-      {/* 알림 모달 */}
-      {newNotifications.length > 0 && isModalOpen && (
+          {/* 알림 */}
+          <ConsumerPageNotificationSection notifications={notifications} />
+        </section>
+
+        {/* 소속 센터 */}
+        <section className='bg-gray-100 w-full  rounded-3xl p-4 xl:w-[35%] '>
+          <h2 className='text-xl font-bold p-4 text-gray-400'> 소속 센터</h2>
+          <hr />
+
+          <div className='mt-4 p-2'>
+            <CenterSection center={center} />
+          </div>
+        </section>
+
+        {/* 예약 목록 */}
+        <ConsumerPageBookingSection bookings={bookings} />
+
+        {/* 알림 모달 */}
+        {newNotifications.length > 0 && (
         <div
           ref={modalRef}
           className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
@@ -91,16 +106,20 @@ export default function ConsumerPage() {
 
             <button
               className="mt-4 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                newNotifications.forEach((noti) => notificationApi.update(noti.id, { state: 'notRead' }));
                 setIsModalOpen(false);
-                setNewNotifications([]); // 알림 리스트 초기화
               }}
             >
               확인
             </button>
           </div>
         </div>
-      )}
+        )}
+
+      </div>
+
     </div>
   );
 }

@@ -1,4 +1,4 @@
-type BookingState =
+export type BookingState =
 'requested' // 예약 신청
 | 'accepted' // 예약 수락
 | 'canceled' // 예약 취소

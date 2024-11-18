@@ -90,83 +90,83 @@ export default function ButtonGrid({ consumer }: Prob) {
 
       {/* 예약 목록 모달 */}
       {isModalOpen2 && (
-        <div
-          ref={modalRef2}
-          className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
-          onClick={() => setIsModalOpen2(false)} // 모달 외부 클릭 시 닫기
-        >
-          <div
-            className="bg-white w-[90vw] max-w-lg p-6 rounded-lg shadow-lg"
-            onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 이벤트 전파 방지
-          >
-            <button
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
-              onClick={() => setIsModalOpen2(false)}
-            >
-              ✕
-            </button>
+      <div
+        ref={modalRef2}
+        className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+      >
+        <div className="bg-white w-[90vw] max-w-lg p-6 rounded-lg shadow-lg">
+          <div className="space-y-6">
+            <h2 className="text-xl font-bold text-gray-800">예약 목록</h2>
 
-            <div className="space-y-6">
-              <h2 className="text-xl font-bold text-gray-800">예약 목록</h2>
+            {bookings.length > 0 ? (
+              bookings.map((booking, index) => {
+                const providerInfo = userApi.getById(booking.providerId); // 통역사 정보 가져오기
+                const stateMessages = {
+                  requested: '예약 요청중',
+                  canceled: '예약 취소',
+                  accepted: '예약 완료',
+                  service_start_requested: '서비스 시작 요청중',
+                  service_start: '서비스중',
+                  service_end_requested: '서비스 종료 요청중',
+                  service_end: '서비스 종료',
+                };
 
-              {bookings.length > 0 ? (
-                bookings.map((booking, index) => {
-                  const providerInfo = userApi.getById(booking.providerId); // 통역사 정보 가져오기
-
-                  return (
-                    <div key={index} className="p-4 border rounded-lg shadow-md bg-white">
-                      <div className='flex  justify-between items-center'>
-                        <div className="flex items-center gap-4">
-                          {providerInfo?.profileImage && (
+                return (
+                  <div key={index} className="p-4 border rounded-lg shadow-md bg-white">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-4">
+                        {providerInfo?.profileImage && (
                           <img
                             src={providerInfo.profileImage}
                             alt={`${providerInfo.name} 프로필`}
                             className="w-12 h-12 rounded-full"
-                        />
-                          )}
+                          />
+                        )}
 
-                          <div className="text-lg font-semibold text-gray-700">{`통역사: ${providerInfo?.name || '정보 없음'}`}</div>
-                        </div>
-
-                        <div className={`${booking.isAccepted ? 'text-blue-400' : ''}`}>{booking.isAccepted ? '예약 완료' : '예약 요청 중'}</div>
+                        <div className="text-lg font-semibold text-gray-700">{`통역사: ${providerInfo?.name || '정보 없음'}`}</div>
                       </div>
 
-                      <div className="border-t border-gray-300 mt-3 pt-3">
-                        <div className="flex items-center justify-between">
-                          <div className="font-semibold text-gray-700">
-                            {`예약 날짜: ${new Date(booking.date).toLocaleDateString('ko-KR')}`}
-                          </div>
+                      <div className="text-sm text-blue-400">{stateMessages[booking.state]}</div>
+                    </div>
 
-                          <button
-                            onClick={() => setExpandedBooking((prev) => (prev === index ? null : index))}
-                            className="text-gray-500 focus:outline-none"
-                            >
-                            {expandedBooking === index ? (
-                              <IoChevronDown className="w-5 h-5" />
-                            ) : (
-                              <IoChevronForward className="w-5 h-5" />
-                            )}
-                          </button>
+                    <div className="border-t border-gray-300 mt-3 pt-3">
+                      <div className="flex items-center justify-between">
+                        <div className="font-semibold text-gray-700">
+                          {`예약 날짜: ${new Date(booking.date).toLocaleDateString('ko-KR')}`}
                         </div>
 
-                        {expandedBooking === index && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setExpandedBooking((prev) => (prev === index ? null : index));
+                          }}
+                          className="text-gray-500 focus:outline-none"
+                        >
+                          {expandedBooking === index ? (
+                            <IoChevronDown className="w-5 h-5" />
+                          ) : (
+                            <IoChevronForward className="w-5 h-5" />
+                          )}
+                        </button>
+                      </div>
+
+                      {expandedBooking === index && (
                         <div className="mt-2 text-sm space-y-1">
                           <div className="text-gray-600">{`시간: ${booking.time}`}</div>
                           <div className="text-gray-600">{`목적지: ${booking.place.name}`}</div>
                           <div className="text-gray-600">{`전달 내용: ${booking.contents || '없음'}`}</div>
                         </div>
-                        )}
-                      </div>
+                      )}
                     </div>
-                  );
-                })
-              ) : (
-                <div className="text-gray-500 text-center">예약된 내역이 없습니다.</div>
-              )}
-            </div>
-
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-gray-500 text-center">예약된 내역이 없습니다.</div>
+            )}
           </div>
         </div>
+      </div>
       )}
     </div>
   );

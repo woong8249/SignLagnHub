@@ -14,16 +14,16 @@ import { CustomAlert } from '@components/CustomAlert'; // 모달 컴포넌트 im
 import { useNavigate } from 'react-router-dom';
 import { bookingApi } from '@utils/bookingApi';
 import { notificationApi } from '@utils/notificationApi';
+import { ConsumerWithAllInfo } from '@typings/User';
 
 interface BookingProcessProps {
+  consumer:ConsumerWithAllInfo
   provider: Provider;
-  onSelectDate: (date: Date) => void;
-  onSelectTime: (time: string) => void;
   onSelectPlace: (item: { name: string; lat: number; lng: number }) => void;
 }
 
 export function BookingProcess({
-  provider, onSelectDate, onSelectTime, onSelectPlace,
+  consumer, provider, onSelectPlace,
 }: BookingProcessProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
@@ -33,29 +33,59 @@ export function BookingProcess({
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate(); // navigate 사용
 
-  function isAvailableDate(date:Date) {
+  function isAvailableDate(date: Date): boolean {
+    const today = new Date();
     return provider.workSchedules.some((schedule) => {
       const scheduleDate = new Date(schedule.date);
+
       return (
         scheduleDate.toLocaleDateString() === date.toLocaleDateString()
-          && !schedule.isHoliday // 휴일이 아닌 날짜만 허용
+        && schedule.state !== 'holiday' // 휴일이 아닌 날짜만 허용
+        && scheduleDate.getTime() >= today.setHours(0, 0, 0, 0) // 오늘 이전 날짜는 선택 불가
       );
     });
   }
-
   function handleDateChange(date: Date | null) {
     if (date) {
       setSelectedDate(date);
       setSelectedTime(null);
-      onSelectDate(date);
       const times = calculateAvailableTimes(date, provider);
       setAvailableTimes(times);
     }
   }
-
   function handleTimeChange(time: string | null) {
     setSelectedTime(time);
-    onSelectTime(time as string);
+  }
+
+  function handleBooking() {
+    setModalOpen(true);
+    bookingApi.create({
+      providerId: provider.id,
+      consumerId: consumer.id,
+      date: selectedDate as Date,
+      time: selectedTime as string,
+      place: selectedPlace as { name: string; lat: number; lng: number },
+      contents: message,
+      updatedAt: new Date(),
+      createdAt: new Date(),
+      state: 'requested',
+    });
+    const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(selectedDate as Date);
+
+    const formattedDateTime = `${formattedDate} ${selectedTime}`;
+
+    notificationApi.create({
+      targetUserId: provider.id,
+      contents: `새로운 예약 신청이 있습니다. ${consumer.name}님이 ${formattedDateTime}에 예약을 신청하셨습니다.`,
+      state: 'new',
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    });
+    navigate('/consumer'); // ConsumerPage로 이동
   }
 
   return (
@@ -130,7 +160,6 @@ export function BookingProcess({
             onSelectLocation={(location) => {
               setSelectedPlace(location);
               onSelectPlace(location);
-              console.log('선택된 위치:', location);
             }}
           />
         </div>
@@ -153,7 +182,7 @@ export function BookingProcess({
 
           <button
           className='mt-6 w-full p-2 flex justify-center border rounded-full bg-green-300 hover:bg-green-500'
-          onClick={() => setModalOpen(true)} // 모달 열기
+          onClick={handleBooking} // 모달 열기
           >
             신청하기
           </button>
@@ -164,36 +193,7 @@ export function BookingProcess({
             message="예약신청이 완료 되었습니다."
             onClose={() => {
               setModalOpen(false);
-              const book = bookingApi.create({
-                providerId: provider.id,
-                consumerId: 1,
-                date: selectedDate as Date,
-                time: selectedTime as string,
-                place: selectedPlace as { name: string; lat: number; lng: number },
-                contents: message,
-                updatedAt: new Date(),
-                createdAt: new Date(),
-                state: 'requested',
-              });
               navigate('/consumer'); // ConsumerPage로 이동
-              setTimeout(() => {
-                const formattedDate = new Intl.DateTimeFormat('ko-KR', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  hour: 'numeric',
-                  minute: 'numeric',
-                }).format(book.createdAt);
-                notificationApi.create({
-                  userId: 1,
-                  contents: `${formattedDate} 에 ${provider.name}님 에게 신청한 예약이 확정되었습니다.`,
-                  state: 'new',
-                  updatedAt: new Date(),
-                  createdAt: new Date(),
-                });
-
-                bookingApi.update(book.id, { state: 'accepted' });
-              }, 5000);
             }} // 모달 닫기
           />
           )}

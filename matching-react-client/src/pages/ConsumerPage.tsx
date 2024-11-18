@@ -6,10 +6,11 @@ import { CenterSection } from '@sections/common/CenterSection';
 import { BookingListSection } from '@sections/consumer/BookingListSection';
 import { Link } from 'react-router-dom';
 import { useModal } from '@hooks/useModal';
-import { NotificationSection } from '@sections/consumer/NotificationSection';
+import { NotificationSection } from '@sections/common/NotificationSection';
 
 import { useImmer } from 'use-immer';
 import { notificationApi } from '@utils/notificationApi';
+import { UserWelcomeSection } from '@sections/common/UserWelcomeSection';
 
 export default function ConsumerPage() {
   const { setIsModalOpen, modalRef } = useModal();
@@ -17,8 +18,6 @@ export default function ConsumerPage() {
   const {
     center,
     bookings,
-    profileImage,
-    name,
     notifications,
   } = consumer;
 
@@ -45,17 +44,9 @@ export default function ConsumerPage() {
         sm:w-[80%]
         xl:flex-row xl:w-[90%] xl:justify-center  py-[6rem]` }>
 
-        <section className='xl:w-[30%]' >
+        <section className='xl:w-[30%] h-full' >
           {/* 개인정보 */}
-          <div>
-            <div className='text-gray-100 mb-2 '>
-              <img src={profileImage} alt="profile" className='w-[100px]  border rounded-xl mb-2 ' />
-              <span className="text-2xl">{name}</span>
-              <span>{' 님'}</span>
-            </div>
-
-            <div className='text-white' >반갑습니다. 오늘도 즐거운 하루 되세요.</div>
-          </div>
+          <UserWelcomeSection user={consumer} />
 
           {/* 예약하기 */}
           <div className="my-4 mb-10 ">
@@ -72,7 +63,7 @@ export default function ConsumerPage() {
 
         {/* 소속 센터 */}
         <section className='bg-gray-100 w-full  rounded-3xl p-4 xl:w-[35%] '>
-          <h2 className='text-xl font-bold p-4 text-gray-400'> 소속 센터</h2>
+          <h2 className='text-xl font-bold p-4 text-gray-500'> 소속 센터</h2>
           <hr />
 
           <div className='mt-4 p-2'>

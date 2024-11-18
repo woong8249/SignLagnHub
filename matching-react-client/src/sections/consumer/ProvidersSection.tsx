@@ -3,15 +3,20 @@
 
 import { BookingProcess } from '@layouts/consumer/BookingProcess';
 import { Provider } from '@pages/BookingPage';
+import { ConsumerWithAllInfo } from '@typings/User';
+
 import { FaPhoneAlt } from 'react-icons/fa';
 
 interface Prob {
+    consumer:ConsumerWithAllInfo
     providers:Provider[]
     handleProvideSelection:(provider:Provider)=>void
     onPlaceSelect: (place: { lat: number; lng: number }) => void; // Prop 추가
 }
 
-export function ProvidersSection({ providers, handleProvideSelection, onPlaceSelect }:Prob) {
+export function ProvidersSection({
+  consumer, providers, handleProvideSelection, onPlaceSelect,
+}:Prob) {
   return (
     <section className=" flex-1 bg-gray-100 overflow-y-auto  shadow-lg rounded">
       <h2 className="text-2xl font-semibold p-4 "> 예약 신청</h2>
@@ -50,13 +55,8 @@ export function ProvidersSection({ providers, handleProvideSelection, onPlaceSel
 
           {provider.showBookingForm && (
             <BookingProcess
+                consumer ={consumer}
                 provider={provider}
-                onSelectDate={(date) => {
-                  console.log(`선택된 날짜: ${date}`);
-                }}
-                onSelectTime={(time) => {
-                  console.log(`선택된 시간: ${time}`);
-                }}
                 onSelectPlace={(place) => onPlaceSelect(place)} // 장소 선택 시 전달
               />
           )}

@@ -22,7 +22,7 @@ export class UserApi extends FakeApi<User> {
       (booking) => booking.providerId === id || booking.consumerId === id,
     );
     const notifications: Notification[] = (notificationApi.getAll()).filter(
-      (notification) => notification.userId === id,
+      (notification) => notification.targetUserId === id,
     );
 
     if (user.role === 'provider') {

@@ -10,7 +10,7 @@ export function calculateAvailableTimes(
   );
 
   if (!workSchedule || !workSchedule.startTime || !workSchedule.endTime) {
-    return []; // 업무시간이 없는 날은 예약 불가능
+    return []; // 근무 일정이 없는 날은 예약 불가능
   }
 
   const startHour = new Date(workSchedule.startTime).getHours();
@@ -19,16 +19,22 @@ export function calculateAvailableTimes(
   const lunchBreakEnd = 13;
 
   const allTimes: string[] = [];
+
+  // 근무 시간 내 모든 1시간 단위 시간대 생성
   for (let hour = startHour; hour < endHour; hour += 1) {
     if (hour >= lunchBreakStart && hour < lunchBreakEnd) continue; // 점심시간 제외
     allTimes.push(`${hour}:00`);
   }
 
-  // 예약된 시간 제외 => 수정해야함
+  // 예약된 시간 추출 (취소된 예약은 제외)
   const bookedTimes = provider.bookings
-    .filter((booking) => new Date(booking.date).toDateString() === selectedDate.toDateString())
-    .map((booking) => `${new Date(booking.time).getHours()}:00`);
+    .filter(
+      (booking) => new Date(booking.date).toDateString() === selectedDate.toDateString()
+        && booking.state !== 'canceled', // 취소된 예약 제외
+    )
+    .map((booking) => booking.time);
 
+  // 예약된 시간을 제외한 가능한 시간 계산
   const availableTimes = allTimes.filter((time) => !bookedTimes.includes(time));
 
   return availableTimes;

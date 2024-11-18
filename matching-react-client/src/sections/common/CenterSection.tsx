@@ -17,7 +17,7 @@ export function CenterSection({ center }:Prob) {
 
         <div className='flex items-center gap-2 mb-2'>
           <img alt='marker'className='w-5 'src={markerUrl.center} />
-          <div className="text-sm   text-gray-600">{center.address}</div>
+          <div className="text-sm  text-gray-600">{center.address}</div>
         </div>
 
         <div className='flex items-center gap-2 mb-2 '>

@@ -45,6 +45,7 @@ export function BookingPage() {
           <CenterSection center={center} />
 
           <ProvidersSection
+            consumer={consumer}
             providers={providers}
             handleProvideSelection={handleProvideSelection}
             onPlaceSelect={setSelectedPlace} // 전달받을 함수 prop 추가

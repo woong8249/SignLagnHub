@@ -11,7 +11,7 @@ interface NotificationSectionProps {
 export function NotificationSection({
   notifications,
 }: NotificationSectionProps) {
-  const [filter, setFilter] = useState<NotificationFilter>('all');
+  const [filter, setFilter] = useState<NotificationFilter>('notRead');
 
   function handleUpdateNotification(id: number, newState: 'read') {
     notificationApi.update(id, { state: newState }); // 업데이트 수행
@@ -27,14 +27,14 @@ export function NotificationSection({
     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
 
   return (
-    <div className="bg-gray-100 w-full rounded-3xl p-4 h-[62%] overflow-y-auto">
-      <h2 className="text-xl font-bold text-gray-400 p-4">알림</h2>
+    <div className="bg-gray-100 w-full rounded-3xl p-4  h-full overflow-y-auto">
+      <h2 className="text-xl font-bold text-gray-500 p-4">알림</h2>
       <hr />
 
       {/* 필터 버튼 */}
       <div className='flex justify-center my-4'>
         <div className="flex justify-start gap-2 my-4">
-          {['all', 'notRead', 'read'].map((type) => (
+          {['notRead', 'read', 'all'].map((type) => (
             <button
             key={type}
             onClick={() => setFilter(type as NotificationFilter)}
@@ -42,9 +42,9 @@ export function NotificationSection({
               filter === type ? 'bg-blue-400 text-white' : 'bg-gray-200 text-gray-700'
             }`}
           >
+              {type === 'notRead' && '미확인'}
+              {type === 'read' && '확인'}
               {type === 'all' && '전체'}
-              {type === 'notRead' && '읽지 않음'}
-              {type === 'read' && '읽음'}
             </button>
           ))}
         </div>

@@ -6,7 +6,7 @@ import { userApi } from '@utils/userApi';
 import { workScheduleApi } from '@utils/workScheduleApi';
 import { Center } from '@typings/Center';
 import { User } from '@typings/User';
-import { WorkSchedule } from '@typings/WorkSchedule';
+import { WorkSchedule, WorkScheduleState } from '@typings/WorkSchedule';
 import { getRandomPhoneNumber } from './getRandom';
 import { providers } from '@constants/providers';
 
@@ -17,31 +17,60 @@ export function clearLocalStorage(): void {
   localStorage.clear();
 }
 
+function getMonday(date: Date): Date {
+  const currentDate = new Date(date);
+  const day = currentDate.getDay();
+  const diff = currentDate.getDate() - day + (day === 0 ? -6 : 1); // 월요일 계산
+  return new Date(currentDate.setDate(diff));
+}
+
 // 2주치 평일 WorkSchedule 생성
 function generateWorkSchedulesForTwoWeeks(startDate: Date, providerId: number): Omit<WorkSchedule, 'id'>[] {
   const schedules: Omit<WorkSchedule, 'id'>[] = [];
-  const daysToGenerate = 10; // 평일 기준 2주치
+  const daysToGenerate = 13; // 평일 기준 2주치
   const currentDate = new Date(startDate);
-  // console.log('currentDate : ', currentDate);
 
   for (let dayCount = 0; dayCount < daysToGenerate; dayCount += 1) {
-    // 오늘부터의 날짜가 평일인지 확인
+    // 평일인지 확인
     if (currentDate.getDay() > 0 && currentDate.getDay() < 6) {
-      const isHoliday = providerId === 2 && currentDate.getDay() === 5; //  금요일 휴무
+      const isFriday = currentDate.getDay() === 5; // 금요일 확인
+      const isHoliday = providerId === 2 && isFriday; // 특정 조건: 금요일 휴무
+      const now = new Date(); // 현재 시간
+
+      let state: WorkScheduleState = 'beforeWork';
+
+      if (isHoliday) {
+        state = 'holiday';
+      } else {
+        const startTime = new Date(currentDate.setHours(9, 0, 0, 0));
+        const endTime = new Date(currentDate.setHours(18, 0, 0, 0));
+
+        if (now >= startTime && now < endTime) {
+          state = 'working'; // 근무 중
+        } else if (now >= endTime) {
+          state = 'afterWork'; // 퇴근
+        } else {
+          state = 'beforeWork'; // 출근 전
+        }
+      }
+
       schedules.push({
         providerId,
-        isHoliday,
+        state,
         date: new Date(currentDate),
-        startTime: isHoliday ? null : new Date(currentDate.setHours(9, 0)),
-        endTime: isHoliday ? null : new Date(currentDate.setHours(18, 0)),
-        createdAt: new Date().toISOString(),
+        startTime: isHoliday ? undefined : new Date(currentDate.setHours(9, 0, 0, 0)),
+        endTime: isHoliday ? undefined : new Date(currentDate.setHours(18, 0, 0, 0)),
+        actualStartTime: undefined,
+        actualEndTime: undefined,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
     }
+
     // 다음 날짜로 이동
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
-  // console.log(schedules);
   return schedules;
 }
 
@@ -115,7 +144,8 @@ export function initData() {
 
       userApi.create(provider);
       const today = new Date();
-      const schedules = generateWorkSchedulesForTwoWeeks(today, i);
+      const monday = getMonday(today); // 금주 월요일 계산
+      const schedules = generateWorkSchedulesForTwoWeeks(monday, i);
       for (const schedule of schedules) {
         workScheduleApi.create(schedule);
       }

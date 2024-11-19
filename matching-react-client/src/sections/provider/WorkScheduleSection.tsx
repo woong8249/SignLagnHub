@@ -13,7 +13,6 @@ export function WorkScheduleSection({ workSchedules }: WorkScheduleSectionProps)
   const todaySchedule = workSchedules.find(
     (schedule) => format(new Date(schedule.date), 'yyyy-MM-dd') === format(today, 'yyyy-MM-dd'),
   );
-
   const weekStart = new Date(today);
   weekStart.setDate(today.getDate() - today.getDay()); // 주의 시작 (일요일)
   const weekEnd = new Date(today);

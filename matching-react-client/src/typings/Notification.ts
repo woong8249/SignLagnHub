@@ -8,3 +8,5 @@ export type Notification = {
     updatedAt: Date; // 마지막 업데이트 시간
     createdAt: Date; // 생성 시간
   };
+
+// type :

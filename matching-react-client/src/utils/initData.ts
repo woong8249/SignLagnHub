@@ -24,21 +24,24 @@ function getMonday(date: Date): Date {
   return new Date(currentDate.setDate(diff));
 }
 
-// 2주치 평일 WorkSchedule 생성
 function generateWorkSchedulesForTwoWeeks(startDate: Date, providerId: number): Omit<WorkSchedule, 'id'>[] {
   const schedules: Omit<WorkSchedule, 'id'>[] = [];
   const daysToGenerate = 13; // 평일 기준 2주치
   const currentDate = new Date(startDate);
 
   for (let dayCount = 0; dayCount < daysToGenerate; dayCount += 1) {
-    // 평일인지 확인
+    // 평일인지 확인 (월~금)
     if (currentDate.getDay() > 0 && currentDate.getDay() < 6) {
       const isFriday = currentDate.getDay() === 5; // 금요일 확인
       const isHoliday = providerId === 2 && isFriday; // 특정 조건: 금요일 휴무
       const now = new Date(); // 현재 시간
 
-      const startTime = new Date(currentDate.setHours(9, 0, 0, 0));
-      const endTime = new Date(currentDate.setHours(18, 0, 0, 0));
+      // startTime과 endTime을 복사하여 사용 (currentDate는 변경하지 않음)
+      const startTime = new Date(currentDate);
+      startTime.setHours(9, 0, 0, 0);
+
+      const endTime = new Date(currentDate);
+      endTime.setHours(18, 0, 0, 0);
 
       let state: WorkScheduleState = 'beforeWork';
       let actualStartTime: Date | undefined;
@@ -49,6 +52,7 @@ function generateWorkSchedulesForTwoWeeks(startDate: Date, providerId: number): 
       } else {
         if (now >= startTime && now < endTime) {
           state = 'working'; // 근무 중
+          actualStartTime = new Date(new Date(currentDate).setHours(8, 50, 0, 0));
         } else if (now >= endTime) {
           state = 'afterWork'; // 퇴근
         } else {
@@ -57,8 +61,8 @@ function generateWorkSchedulesForTwoWeeks(startDate: Date, providerId: number): 
 
         // 지난 날짜에 대해 실제 출퇴근 시간을 자동 설정
         if (currentDate < now) {
-          actualStartTime = new Date(currentDate.setHours(9, 0, 0, 0));
-          actualEndTime = new Date(currentDate.setHours(18, 0, 0, 0));
+          actualStartTime = new Date(startTime);
+          actualEndTime = new Date(endTime);
         }
       }
 
@@ -66,8 +70,8 @@ function generateWorkSchedulesForTwoWeeks(startDate: Date, providerId: number): 
         providerId,
         state,
         date: new Date(currentDate),
-        startTime: isHoliday ? undefined : new Date(startTime),
-        endTime: isHoliday ? undefined : new Date(endTime),
+        startTime: isHoliday ? undefined : startTime,
+        endTime: isHoliday ? undefined : endTime,
         actualStartTime,
         actualEndTime,
         createdAt: new Date(),

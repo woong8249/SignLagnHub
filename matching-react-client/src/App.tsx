@@ -10,11 +10,14 @@ import ConsumerPage from '@pages/ConsumerPage';
 import { ProviderPage } from '@pages/ProviderPage';
 import MainPage from '@pages/MainPage';
 import { BookingPage } from '@pages/BookingPage';
-import { clearLocalStorage, initData } from '@utils/initData';
+import {
+  // clearLocalStorage,
+  initData,
+} from '@utils/initData';
 import { loadGoogleMapsScript } from '@utils/loadGoogleMapScript';
 import config from '@config/config';
 
-clearLocalStorage();
+// clearLocalStorage();
 initData();
 
 await loadGoogleMapsScript(config.googleKey);

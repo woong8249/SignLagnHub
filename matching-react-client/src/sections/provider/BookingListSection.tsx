@@ -37,6 +37,7 @@ function getBookingStateLabel(state: BookingState): string {
 export function BookingListSection({ bookings }: BookingSectionProps) {
   const [filter, setFilter] = useState<BookingFilter>('all');
   const [expandedBooking, setExpandedBooking] = useState<number | null>(null);
+  const [message, setMessage] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
 
   const filteredBookings = bookings
@@ -70,6 +71,29 @@ export function BookingListSection({ bookings }: BookingSectionProps) {
     });
     setModalOpen(false);
     alert('예약이 확정되었습니다');
+  }
+
+  function handleOnStartRequested(booking: Booking) {
+    bookingApi.update(booking.id, { state: 'service_start_requested', serviceStartRequestedAt: new Date() });
+
+    const provider = userApi.getById(booking.providerId) as ConsumerWithAllInfo;
+    const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(booking.date as Date);
+
+    const formattedDateTime = `${formattedDate} ${booking.time}`;
+
+    notificationApi.create({
+      targetUserId: booking.consumerId,
+      contents: `${provider.name}님이 ${formattedDateTime}에 예약된 서비스의 시작을 요청하였습니다.`,
+      state: 'new',
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    });
+    setModalOpen(false);
+    alert('서비스 시작 요청이 완료되었습니다.');
   }
 
   return (
@@ -171,7 +195,7 @@ export function BookingListSection({ bookings }: BookingSectionProps) {
                   {booking.state === 'requested' && (
                   <div className="mt-4">
                     <button
-                      onClick={() => setModalOpen(true)}
+                      onClick={() => { setModalOpen(true); setMessage('해당 예약을 확정하시겠습니까?'); }}
                       className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                     >
                       예약 확정
@@ -179,11 +203,32 @@ export function BookingListSection({ bookings }: BookingSectionProps) {
                   </div>
                   )}
 
+                    {/* 예약 확정 상태에서만 서비스 시작 요청 버튼 */}
+                  {booking.state === 'accepted' && (
+                  <div className="mt-4">
+                    <button
+                      onClick={() => { setModalOpen(true); setMessage('서비스 시작 요청을 하시겠습니까?'); }}
+                      className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    >
+                      서비스 시작 요청
+                    </button>
+                  </div>
+                  )}
+
                   {/* 모달 */}
                   {isModalOpen && (
                   <CustomAlert
-                    message="해당 예약을 확정하시겠습니까?"
-                    onConfirm={() => { handleOnConfirmed(booking); }}
+                    message={message}
+                    onConfirm={() => {
+                      if (message === '해당 예약을 확정하시겠습니까?') {
+                        handleOnConfirmed(booking);
+                      }
+                      if (message === '서비스 시작 요청을 하시겠습니까?') {
+                        handleOnStartRequested(booking);
+                      }
+                    }
+
+                      }
                     onCancel={() => {
                       setModalOpen(false);
                     }}

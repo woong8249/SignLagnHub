@@ -33,9 +33,13 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins,
+    build: {
+      target: 'esnext', // 최신 ESNext 사용
+    },
     resolve: {
       alias: {
         '@hooks': path.resolve(__dirname, 'src/hooks'),
+        '@public': path.resolve(__dirname, 'public'),
         '@components': path.resolve(__dirname, 'src/components'),
         '@layouts': path.resolve(__dirname, 'src/layouts'),
         '@pages': path.resolve(__dirname, 'src/pages'),

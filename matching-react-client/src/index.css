@@ -1,68 +1,73 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* 글로벌 스타일 */
+html {
+  scroll-behavior: smooth; /* 부드러운 스크롤 */
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: 'Inter', sans-serif; /* Tailwind에서 제공하는 기본 폰트 */
+  background-color: #f5f5f5; /* 연한 회색 배경 */
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.custom-calendar {
+  width: 100%;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.react-datepicker__month-container{
+  width: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+
+.react-datepicker__day-names{
+  display:flex ;
+  justify-content:space-between ;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.react-datepicker__week{
+  display:flex ;
+  justify-content:space-between ;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.react-datepicker__day-name, 
+.react-datepicker__day, 
+.react-datepicker__time-name {
+  font-size: 1rem; /* 요일과 날짜 텍스트 크기 */
+  height: 2rem; /* 각 날짜 셀의 높이 */
+  width: 2rem;
+}
+
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   }
-  a:hover {
-    color: #747bff;
+
+  .responsive-h1 {
+    @apply text-2xl; /* 기본 크기 */
+    @apply font-bold; /* 굵은 폰트 */
   }
-  button {
-    background-color: #f9f9f9;
+
+  @screen sm {
+    .responsive-h1 {
+      @apply text-3xl;
+    }
+  }
+
+  @screen md {
+    .responsive-h1 {
+      @apply text-4xl;
+    }
+  }
+
+  @screen 2xl {
+    .responsive-h1 {
+      @apply text-5xl;
+    }
   }
 }

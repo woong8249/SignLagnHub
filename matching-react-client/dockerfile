@@ -1,0 +1,29 @@
+FROM --platform=linux/amd64 node:21 AS base
+
+# 1. pnpm 설치 및 환경 설정
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV SHELL=/bin/bash
+
+RUN npm install -g pnpm \
+    && mkdir -p $PNPM_HOME \
+    && ln -s /usr/local/bin/pnpm $PNPM_HOME
+
+# 2. 작업 디렉토리 설정
+WORKDIR /app
+
+# 3. 패키지 매니저 변경 및 의존성 설치
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install
+
+# 4. 소스 코드 복사
+COPY . .
+
+# 5. Vite 애플리케이션 빌드
+RUN pnpm run build
+
+# 6. Serve를 사용한 정적 파일 서빙
+RUN pnpm install -g serve
+
+EXPOSE 80
+CMD ["serve", "-s", "dist", "-l", "80"]

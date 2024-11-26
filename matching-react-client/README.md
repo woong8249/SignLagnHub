@@ -1,50 +1,41 @@
-# React + TypeScript + Vite
+# Docker push process
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[Docker Hub Repository](https://hub.docker.com/repository/docker/jiwoong8249/sign-lang-hub-booking/general)
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```zsh
+docker login
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+``` zsh
+docker build -t sign-lang-hub-booking:tagName .
 ```
+
+``` zsh
+docker tag sign-lang-hub-booking:tagName jiwoong8249/sign-lang-hub-booking:latest
+```
+
+``` zsh
+docker push jiwoong8249/sign-lang-hub-booking:latest
+```
+
+### Ref
+
+- 로컬에서 빌드 및 테스트
+
+  1. 로컬에서 다양한 태그로 이미지를 빌드하고 테스트.
+
+  ```zsh
+  docker build -t my-app:experimental .
+  docker build -t my-app:v1.0.0 .
+  ```
+  2. 테스트 후, 안정적인 버전을 리모트에 푸시.
+
+
+  ``` zsh
+  docker tag my-app:v1.0.0 myusername/my-app:v1.0.0
+  docker push myusername/my-app:v1.0.0
+  ```
+  
+- 리모트는 배포를 위한 태그 관리
+
+  리모트에는 주로 안정적인 버전(e.g., v1.0.0, latest)만 업로드하여 배포 환경에서 사용할 수 있도록 합니다.
